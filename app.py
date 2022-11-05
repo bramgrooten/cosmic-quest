@@ -13,14 +13,12 @@ def test():
 
 @app.route("/move")
 def move():
-    print(map.planet_list)
-    return
     # # get current human colony
     # check if new != empty
     #     add new to colony list
 
     # # get recommendations for next planet to colonize
-    # scores = recommender() 
+    # scores, best = recommender(map) 
     # # add best planet to human colony
     # add best candidate to new
     # # return the new human colony to frontend
