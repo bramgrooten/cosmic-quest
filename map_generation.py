@@ -26,17 +26,17 @@ class map_generation:
             star.planet_list.append(p)            
 
     def determine_distances(self, galaxy_map):
-        galaxy_map.dist_map = [[-1]*len(galaxy_map.planet_list)]*len(galaxy_map.planet_list)
-        #print(galaxy_map.dist_map[0])
+        galaxy_map.dist_map = [None] * len(galaxy_map.planet_list)
+        for a in range(len(galaxy_map.planet_list)):
+            galaxy_map.dist_map[a] = [0] * len(galaxy_map.planet_list)
+        
         for a in range(len(galaxy_map.planet_list)):
             for b in range(len(galaxy_map.planet_list)):
                 # Can definitely be made more elegant, simple solution for now
                 galaxy_map.dist_map[a][b] = math.dist([galaxy_map.planet_list[a].x, galaxy_map.planet_list[a].y],
                                                       [galaxy_map.planet_list[b].x, galaxy_map.planet_list[b].y])
                 # math.sqrt(pow(x,2) + pow(x,2))  abs(Map.planet_list[x] - Map.planet_list[y])
-        #print(galaxy_map.dist_map[0])
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        #print(galaxy_map.dist_map[1])
+
         return galaxy_map
 
     def init_human_colony(self):

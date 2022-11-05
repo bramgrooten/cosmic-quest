@@ -1,8 +1,8 @@
 import json
 from flask import Flask
 from map_generation import map_generation
-import numpy as np
 from recommender import recommend
+from planets import planet_argmax
 from flask_cors import CORS
 import copy
 
@@ -57,13 +57,13 @@ def move():
 
     num_to_add = 3
     for i in range(num_to_add):
-        new_planet_index = max(range(len(scores_and_origins)), key=lambda i: scores_and_origins[i][0])
+        new_planet_index = planet_argmax(scores_and_origins)
         from_planet_index = scores_and_origins[new_planet_index][1]
 
         new_planets.append(new_planet_index)
         new_connections.append((from_planet_index, new_planet_index))
 
-        scores_and_origins[new_planet_index][0] = -1  # set score to -1, so it won't be chosen again
+        scores_and_origins[new_planet_index] = (-1, -1)  # set score to -1, so it won't be chosen again
 
     # add previous move's "new" to the list of connections and planet
     galaxy_map.connections += galaxy_map.new_connections
