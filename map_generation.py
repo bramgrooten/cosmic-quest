@@ -1,5 +1,6 @@
 from planets import Planet
 from map import Map
+import random
 from stars import Star
 
 nr_of_planets = 0
@@ -9,10 +10,20 @@ class map_generation:
         for i in range(star_count):
             Map.star_list.append(Star())
     
-    def generate_star_system_distribution():
+    def generate_star_system_distribution(self, star):
         for i in star.planet_count:
-            p = Planet
+            p = Planet()
             Map.planet_list.append(p)
+            star.planet_list.append(p)
+            # initial positions, purely
+            # sample from Gaussian distribution
+            r = np.random.normal(25_0, 5_0)
+            angle = np.random.uniform(0, 2*np.pi)
+            if r > 100_0:  # get r back in range
+                r = 100_0 - (r - 100_0)
+            # convert to cartesian coordinates
+            p.x = r * np.cos(angle)
+            p.y = r * np.sin(angle)
     
     def generate_planet():
         TODO
@@ -25,19 +36,19 @@ class map_generation:
                 Map.dist_map[x][y] = abs(Map.planet_list[x] - Map.planet_list[y])
 
 
-    def generate():
+    def generate(self):
         # determine how many stars we need
         star_count = 2
         # determine where the stars are
-        generate_milkyway_distribution(star_count)
+        self.generate_milkyway_distribution(self, star_count)
 
         # for each star...
         for star in Map.star_list:
             # determine how many planets
-            star.planet_count = 4
-            nr_of_planets += star.planet_count
+            planet_count =  random.range(4) #4
+            nr_of_planets += planet_count
             # for each star, determine where planets are
-            generate_star_system_distribution(star)
+            generate_star_system_distribution(star, planet_count)
 
         # configure planets
         for p in Map.planet_list:
@@ -45,3 +56,8 @@ class map_generation:
 
         # determine distances between planets
         determine_distances()
+
+
+    if __name__ == "__main__":
+        # generate and fill in nr_of_profiles profiles
+        generate()
