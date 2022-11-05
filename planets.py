@@ -2,7 +2,6 @@ from dataclasses import dataclass
 import numpy as np
 
 
-@dataclass
 class Planet:
     def __init__(self, x, y, r):
         self.x = x
@@ -11,15 +10,27 @@ class Planet:
         self.generate_planet_properties()
 
     def generate_planet_properties(self):
-        # right-tailed distribution for mass of the planet, mean 1, tail until 4000
-        self.mass = np.random.uniform(1, 4000)  # in Earth masses
-        self.radius = np.random.uniform(0, 15)  # in Earth radii
-        self.orbital_period = np.random.uniform(0, 100_000)  # in days
-        self.star_mass = np.random.uniform(0, 99)  # in solar masses
-        self.star_radius = np.random.uniform(0, 99)  # in solar radii
-        self.star_temperature = np.random.uniform(0, 40_000)  # in Kelvin
-        # see https://link.springer.com/referenceworkentry/10.1007/978-3-642-11274-4_487
-        self.star_age = np.random.uniform(0, 13.8)  # in Gy (billion years)
+        self.radius = np.random.gamma(shape=2, scale=2)  # in earth radii (max around 20)
+        self.mass = np.random.gamma(shape=2, scale=400)  # in earth mass (max around 3000)
+        self.temperature = np.random.gamma(shape=2, scale=150)  # in kelvin (max around 1000)
+
+        # old version (uniform distribution)
+        # self.radius = np.random.uniform(0, 100_000)  # in km (jupiter radius = 69_911 km)
+        # self.density = np.random.uniform(0, 10)  # in g/cm^3 (earth density = 5.5 g/cm^3)
+        # self.surface_temperature = np.random.uniform(0, 1000)  # in Kelvin (earth surface temperature = 288 K)
+
+
+    # previous version with 7 properties
+    # def generate_planet_properties(self):
+    #     # right-tailed distribution for mass of the planet, mean 1, tail until 4000
+    #     self.mass = np.random.uniform(1, 4000)  # in Earth masses
+    #     self.radius = np.random.uniform(0, 15)  # in Earth radii
+    #     self.orbital_period = np.random.uniform(0, 100_000)  # in days
+    #     self.star_mass = np.random.uniform(0, 99)  # in solar masses
+    #     self.star_radius = np.random.uniform(0, 99)  # in solar radii
+    #     self.star_temperature = np.random.uniform(0, 40_000)  # in Kelvin
+    #     # see https://link.springer.com/referenceworkentry/10.1007/978-3-642-11274-4_487
+    #     self.star_age = np.random.uniform(0, 13.8)  # in Gy (billion years)
 
 
 
@@ -28,14 +39,18 @@ class Planet:
 
 if __name__ == '__main__':
 
-    import matplotlib.pyplot as plt
-    masses = []
-    for i in range(1000):
-        masses.append(np.random.lognormal(0, 5))
-    # plot log-normal distribution
-    plt.hist(masses, bins=100)
-    plt.show()
+    # import matplotlib.pyplot as plt
+    # masses = []
+    # for i in range(1000):
+    #     masses.append(np.random.lognormal(0, 5))
+    # # plot log-normal distribution
+    # plt.hist(masses, bins=100)
+    # plt.show()
 
+    import matplotlib.pyplot as plt
+    s = np.random.gamma(shape=2, scale=400, size=1000)
+    plt.hist(s, 70, density=True)
+    plt.show()
 
 
 # self.temperature = config.get('temperature', None)

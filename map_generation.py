@@ -4,6 +4,7 @@ import random
 from stars import Star
 import numpy as np
 import math
+import json
 
 nr_of_planets = 0
 
@@ -35,16 +36,38 @@ class map_generation:
 
     def generate(self):
         # determine how many stars we need
-        star_count = 2
+        star_count = 2000
         # determine where the stars are
         self.generate_milkyway_distribution(self, star_count)
 
         # for each star...
         for i, star in enumerate(Map.star_list):
             # determine how many planets
-            planet_count =  random.randint(1, 5)
+            planet_count = 3#random.randint(1, 5)
             # for each star, determine where planets are
             self.generate_star_system_distribution(self, star, planet_count)
 
         # determine distances between planets
         self.determine_distances(self)
+
+        # save the map to json
+        star_list = []
+        planet_list = []
+        for s in Map.star_list:
+            for p in s.planet_list:
+                planet_list.append(p.__dict__)
+            s.planet_list = planet_list
+            planet_list = []
+            star_list.append(s.__dict__)
+        
+        planet_list = []
+        for p in Map.planet_list:
+            planet_list.append(p.__dict__)
+
+        json_map = {
+            "star_list": star_list,
+            "planet_list": planet_list
+        }
+        with open("test.json", "w") as outfile:
+            json.dump(json_map, outfile)
+
