@@ -40,7 +40,7 @@ def recommend(gmap: Map):
 
     return scores_and_origin
 
-# testing code
+# # testing code
 mg = map_generation()
 galaxy = mg.generate()
 galaxy = mg.determine_distances(galaxy)
@@ -53,5 +53,7 @@ for i in range(len(r)):
     if (r[i][0] > best_score):
         best_score = r[i][0]
         index_best = i
-        
+
+print(galaxy.dist_map[0])
+print(galaxy.dist_map[1])
 print(r[index_best])
