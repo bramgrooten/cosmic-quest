@@ -71,7 +71,7 @@ class map_generation:
         return json_map
 
     def save_map_elements_to_json(self, star_list1, planet_list1, human_colony1, connections1,
-                                  new_human_colony_planets1, new_connections1):
+                                  new_human_colony_planets1, new_connections1, scores1):
         star_list = []
         planet_list = []
         for s in star_list1:
@@ -92,6 +92,7 @@ class map_generation:
             "connections": connections1,
             "new_human_colony_planets": new_human_colony_planets1,
             "new_connections": new_connections1,
+            "scores": scores1,
         }
         # with open("map.json", "w") as outfile:
         #     json.dump(json_map, outfile)

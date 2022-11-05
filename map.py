@@ -10,3 +10,4 @@ class Map:
 
     new_human_colony_planets = []
     new_connections = []
+    scores = []

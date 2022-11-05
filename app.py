@@ -21,14 +21,19 @@ def init_galaxy():
     connections1 = copy.deepcopy(galaxy_map.connections)
     new_human_colony_planets1 = copy.deepcopy(galaxy_map.new_human_colony_planets)
     new_connections1 = copy.deepcopy(galaxy_map.new_connections)
+    scores1 = copy.deepcopy(galaxy_map.scores)
     return map_generator.save_map_elements_to_json(star_list1, planet_list1, human_colony1, connections1,
-                                                   new_human_colony_planets1, new_connections1)
+                                                   new_human_colony_planets1, new_connections1, scores1)
 
 
 @app.route("/move")
 def move():
     # get recommendations for next planet to colonize
     scores_and_origins = recommend(galaxy_map)
+    scores = []
+    for s in scores_and_origins:
+        scores.append(s[0])
+    galaxy_map.scores = scores
 
     # add the num_to_add best planet(s) to human colony
     new_planets = []
@@ -58,10 +63,11 @@ def move():
     connections1 = copy.deepcopy(galaxy_map.connections)
     new_human_colony_planets1 = copy.deepcopy(galaxy_map.new_human_colony_planets)
     new_connections1 = copy.deepcopy(galaxy_map.new_connections)
+    scores1 = copy.deepcopy(galaxy_map.scores)
 
     # return the new human colony to frontend
     return map_generator.save_map_elements_to_json(star_list1, planet_list1, human_colony1, connections1,
-                                                   new_human_colony_planets1, new_connections1)
+                                                   new_human_colony_planets1, new_connections1, scores1)
 
 
 # old add best planet:
