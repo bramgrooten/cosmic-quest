@@ -10,7 +10,7 @@ class map_generation:
         for i in range(star_count):
             Map.star_list.append(Star())
     
-    def generate_star_system_distribution(star):
+    def generate_star_system_distribution(self, star):
         for i in star.planet_count:
             p = Planet()
             Map.planet_list.append(p)
@@ -36,11 +36,11 @@ class map_generation:
                 Map.dist_map[x][y] = abs(Map.planet_list[x] - Map.planet_list[y])
 
 
-    def generate():
+    def generate(self):
         # determine how many stars we need
         star_count = 2
         # determine where the stars are
-        generate_milkyway_distribution(star_count)
+        self.generate_milkyway_distribution(self, star_count)
 
         # for each star...
         for star in Map.star_list:
@@ -56,3 +56,8 @@ class map_generation:
 
         # determine distances between planets
         determine_distances()
+
+
+    if __name__ == "__main__":
+        # generate and fill in nr_of_profiles profiles
+        generate()
