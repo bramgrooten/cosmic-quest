@@ -31,6 +31,12 @@ class Planet:
 
 
 
+# diameter of milky way galaxy: 100,000 light years. Center is (0,0)
+def generate_star():
+    pass
+
+def generate_planet():
+    pass
 
 
 
