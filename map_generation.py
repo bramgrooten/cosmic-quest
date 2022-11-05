@@ -52,7 +52,7 @@ class map_generation:
             "star_list": star_list,
             "planet_list": planet_list
         }
-        with open("test.json", "w") as outfile:
+        with open("map.json", "w") as outfile:
             json.dump(json_map, outfile)
 
     def generate(self):
