@@ -32,6 +32,7 @@ def init_galaxy():
 def move():
     global timestep
     timestep += 1
+    print("timestep: ", timestep)
 
     # get recommendations for next planet to colonize
     scores_and_origins = recommend(galaxy_map)
@@ -89,13 +90,24 @@ def reset():
     galaxy_map.new_connections = []
     galaxy_map.scores = []
 
+    star_list1 = copy.deepcopy(galaxy_map.star_list)
+    planet_list1 = copy.deepcopy(galaxy_map.planet_list)
+    human_colony1 = copy.deepcopy(galaxy_map.human_colony)
+    connections1 = copy.deepcopy(galaxy_map.connections)
+    new_human_colony_planets1 = copy.deepcopy(galaxy_map.new_human_colony_planets)
+    new_connections1 = copy.deepcopy(galaxy_map.new_connections)
+    scores1 = copy.deepcopy(galaxy_map.scores)
+
+    return map_generator.save_map_elements_to_json(star_list1, planet_list1, human_colony1, connections1,
+                                                   new_human_colony_planets1, new_connections1, scores1)
+
 
 def set_num_planets_to_add(timestep):
-    if timestep < 3:
+    if timestep < 6:
         return 1
-    elif timestep < 7:
+    elif timestep < 14:
         return 2
-    elif timestep < 12:
+    elif timestep < 24:
         return 3
     else:
         return 4
