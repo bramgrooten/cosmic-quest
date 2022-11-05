@@ -14,17 +14,13 @@ class Planet:
         self.mass = np.random.gamma(shape=2, scale=400)  # in earth mass (max around 3000)
         self.temperature = np.random.gamma(shape=2, scale=150)  # in kelvin (max around 1000)
 
-        # old (uniform distribution)
+        # old version (uniform distribution)
         # self.radius = np.random.uniform(0, 100_000)  # in km (jupiter radius = 69_911 km)
         # self.density = np.random.uniform(0, 10)  # in g/cm^3 (earth density = 5.5 g/cm^3)
         # self.surface_temperature = np.random.uniform(0, 1000)  # in Kelvin (earth surface temperature = 288 K)
 
 
-    def generate_realistic_planet_properties(self):
-        # sample from a heavy-tailed distribution
-        self.radius = np.random.normal(69_911, 10_000)
-
-    # version with 7 properties
+    # previous version with 7 properties
     # def generate_planet_properties(self):
     #     # right-tailed distribution for mass of the planet, mean 1, tail until 4000
     #     self.mass = np.random.uniform(1, 4000)  # in Earth masses
