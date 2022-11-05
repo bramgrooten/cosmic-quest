@@ -70,6 +70,32 @@ class map_generation:
         #     json.dump(json_map, outfile)
         return json_map
 
+    def save_map_elements_to_json(self, star_list1, planet_list1, human_colony1, connections1,
+                                  new_human_colony_planets1, new_connections1):
+        star_list = []
+        planet_list = []
+        for s in star_list1:
+            for p in s.planet_list:
+                planet_list.append(p.__dict__)
+            s.planet_list = planet_list
+            planet_list = []
+            star_list.append(s.__dict__)
+
+        planet_list = []
+        for p in planet_list1:
+            planet_list.append(p.__dict__)
+
+        json_map = {
+            "star_list": star_list,
+            "planet_list": planet_list,
+            "human_colony": human_colony1,
+            "connections": connections1,
+            "new_human_colony_planets": new_human_colony_planets1,
+            "new_connections": new_connections1,
+        }
+        # with open("map.json", "w") as outfile:
+        #     json.dump(json_map, outfile)
+        return json_map
 
     def generate(self):
         # determine how many stars we need

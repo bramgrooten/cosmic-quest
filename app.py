@@ -9,40 +9,20 @@ import copy
 app = Flask(__name__)
 CORS(app)
 
-global map_generator
 map_generator = map_generation()
-global galaxy_map
 galaxy_map = map_generator.generate()
 galaxy_map = map_generator.determine_distances(galaxy_map)
 
 @app.route("/init_galaxy")
 def init_galaxy():
-    global galaxy_map
-    global map_generator
-    map = copy.deepcopy(galaxy_map)
-    star_list = []
-    planet_list = []
-    for s in map.star_list:
-        for p in s.planet_list:
-            planet_list.append(p.__dict__)
-        s.planet_list = planet_list
-        planet_list = []
-        star_list.append(s.__dict__)
-    
-    planet_list = []
-    for p in map.planet_list:
-        planet_list.append(p.__dict__)
-
-    json_map = {
-        "star_list": star_list,
-        "planet_list": planet_list,
-        #"dist_map": Map.dist_map,
-        "human_colony": map.human_colony,
-    }
-    json_map2 = copy.deepcopy(json_map)
-    del json_map
-    return json_map2
-    return map_generator.save_map_to_json(galaxy_map)
+    star_list1 = copy.deepcopy(galaxy_map.star_list)
+    planet_list1 = copy.deepcopy(galaxy_map.planet_list)
+    human_colony1 = copy.deepcopy(galaxy_map.human_colony)
+    connections1 = copy.deepcopy(galaxy_map.connections)
+    new_human_colony_planets1 = copy.deepcopy(galaxy_map.new_human_colony_planets)
+    new_connections1 = copy.deepcopy(galaxy_map.new_connections)
+    return map_generator.save_map_elements_to_json(star_list1, planet_list1, human_colony1, connections1,
+                                                   new_human_colony_planets1, new_connections1)
 
 
 @app.route("/move")
@@ -72,9 +52,16 @@ def move():
     galaxy_map.new_connections = new_connections
     galaxy_map.new_human_colony_planets = new_planets
 
-    # return the new human colony to frontend
-    return map_generator.save_map_to_json(galaxy_map)
+    star_list1 = copy.deepcopy(galaxy_map.star_list)
+    planet_list1 = copy.deepcopy(galaxy_map.planet_list)
+    human_colony1 = copy.deepcopy(galaxy_map.human_colony)
+    connections1 = copy.deepcopy(galaxy_map.connections)
+    new_human_colony_planets1 = copy.deepcopy(galaxy_map.new_human_colony_planets)
+    new_connections1 = copy.deepcopy(galaxy_map.new_connections)
 
+    # return the new human colony to frontend
+    return map_generator.save_map_elements_to_json(star_list1, planet_list1, human_colony1, connections1,
+                                                   new_human_colony_planets1, new_connections1)
 
 
 # old add best planet:
