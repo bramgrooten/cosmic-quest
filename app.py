@@ -12,6 +12,7 @@ CORS(app)
 map_generator = map_generation()
 galaxy_map = map_generator.generate()
 galaxy_map = map_generator.determine_distances(galaxy_map)
+timestep = 0
 
 @app.route("/init_galaxy")
 def init_galaxy():
@@ -28,6 +29,9 @@ def init_galaxy():
 
 @app.route("/move")
 def move():
+    global timestep
+    timestep += 1
+
     # get recommendations for next planet to colonize
     scores_and_origins = recommend(galaxy_map)
     scores = []
@@ -39,7 +43,14 @@ def move():
     new_planets = []
     new_connections = []
 
-    num_to_add = 3
+    if timestep < 3:
+        num_to_add = 1
+    elif timestep < 7:
+        num_to_add = 2
+    elif timestep < 12:
+        num_to_add = 3
+    else:
+        num_to_add = 4
     for i in range(num_to_add):
         new_planet_index = planet_argmax(scores_and_origins)
         from_planet_index = scores_and_origins[new_planet_index][1]
