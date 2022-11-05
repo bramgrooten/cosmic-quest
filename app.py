@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 map_generator = map_generation()
 galaxy_map = map_generator.generate()
+galaxy_map = map_generator.determine_distances(galaxy_map)
 
 @app.route("/init_galaxy")
 def init_galaxy():
