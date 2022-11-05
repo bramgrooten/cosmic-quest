@@ -11,10 +11,19 @@ class Planet:
         self.generate_planet_properties()
 
     def generate_planet_properties(self):
-        self.radius = np.random.uniform(0, 100_000)  # in km (jupiter radius = 69_911 km)
-        self.density = np.random.uniform(0, 10)  # in g/cm^3 (earth density = 5.5 g/cm^3)
-        self.escape_velocity = np.random.uniform(0, 100)  # in km/s (jupiter escape velocity = 60.2 km/s)
-        self.surface_temperature = np.random.uniform(0, 1000)  # in Kelvin (earth surface temperature = 288 K)
+        self.radius = np.random.gamma(shape=2, scale=2)  # in earth radii (max around 20)
+        self.mass = np.random.gamma(shape=2, scale=400)  # in earth mass (max around 3000)
+        self.temperature = np.random.gamma(shape=2, scale=150)  # in kelvin (max around 1000)
+
+        # old (uniform distribution)
+        # self.radius = np.random.uniform(0, 100_000)  # in km (jupiter radius = 69_911 km)
+        # self.density = np.random.uniform(0, 10)  # in g/cm^3 (earth density = 5.5 g/cm^3)
+        # self.surface_temperature = np.random.uniform(0, 1000)  # in Kelvin (earth surface temperature = 288 K)
+
+
+    def generate_realistic_planet_properties(self):
+        # sample from a heavy-tailed distribution
+        self.radius = np.random.normal(69_911, 10_000)
 
     # version with 7 properties
     # def generate_planet_properties(self):
@@ -35,14 +44,18 @@ class Planet:
 
 if __name__ == '__main__':
 
-    import matplotlib.pyplot as plt
-    masses = []
-    for i in range(1000):
-        masses.append(np.random.lognormal(0, 5))
-    # plot log-normal distribution
-    plt.hist(masses, bins=100)
-    plt.show()
+    # import matplotlib.pyplot as plt
+    # masses = []
+    # for i in range(1000):
+    #     masses.append(np.random.lognormal(0, 5))
+    # # plot log-normal distribution
+    # plt.hist(masses, bins=100)
+    # plt.show()
 
+    import matplotlib.pyplot as plt
+    s = np.random.gamma(shape=2, scale=400, size=1000)
+    plt.hist(s, 70, density=True)
+    plt.show()
 
 
 # self.temperature = config.get('temperature', None)
