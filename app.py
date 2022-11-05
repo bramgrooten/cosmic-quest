@@ -78,7 +78,16 @@ def move():
 #     new_planet_index = np.argmax(scores_and_origins)
 #     galaxy_map.human_colony.append(new_planet_index)
 
+@app.route("/reset")
+def reset():
+    galaxy_map.human_colony = []
 
+    map_generator.init_human_colony()
+
+    galaxy_map.connections = []
+    galaxy_map.new_human_colony_planets = []
+    galaxy_map.new_connections = []
+    galaxy_map.scores = []
 
 def set_num_planets_to_add(timestep):
     if timestep < 3:
