@@ -33,6 +33,7 @@ class map_generation:
                 galaxy_map.dist_map[x][y] = math.dist([galaxy_map.planet_list[x].x, galaxy_map.planet_list[x].y],
                                                       [galaxy_map.planet_list[y].x, galaxy_map.planet_list[y].y])
                 # math.sqrt(pow(x,2) + pow(x,2))  abs(Map.planet_list[x] - Map.planet_list[y])
+        return galaxy_map
 
     def init_human_colony(self):
         first_planet_index = random.randint(0, len(Map.planet_list))
