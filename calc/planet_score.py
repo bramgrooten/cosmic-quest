@@ -8,7 +8,7 @@ def planet_score(dist, rad, mass, temp):
     ESI_val = calc_esi(rad, mass, temp)
 
     # closer is better
-    dist_val = 100*math.exp(-0.0005*dist)
+    dist_val = 100*math.exp(-0.00005*dist)
     # dist_val = 10
     # if (dist < 10000):
     #     dist_val = 100
