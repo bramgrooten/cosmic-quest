@@ -4,6 +4,7 @@ import random
 from stars import Star
 import numpy as np
 import math
+import json
 
 nr_of_planets = 0
 
@@ -48,3 +49,23 @@ class map_generation:
 
         # determine distances between planets
         self.determine_distances(self)
+        # save the map to json
+        star_list = []
+        planet_list = []
+        for s in Map.star_list:
+            for p in s.planet_list:
+                planet_list.append(p.__dict__)
+            s.planet_list = planet_list#.__dict__
+            star_list.append(s.__dict__)
+        
+        planet_list = []
+        for p in Map.planet_list:
+            planet_list.append(p.__dict__)
+        json_map = {
+            "star_list": star_list,#.__dict__,#Map.star_list.__dict__,
+            "planet_list": planet_list#.__dict__,#Map.planet_list,#
+            #"dist_map": Map.dist_map
+        }
+        with open("test.json", "w") as outfile:
+            json.dump(json_map, outfile)
+

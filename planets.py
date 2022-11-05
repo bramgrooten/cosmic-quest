@@ -2,7 +2,6 @@ from dataclasses import dataclass
 import numpy as np
 
 
-@dataclass
 class Planet:
     def __init__(self, x, y, r):
         self.x = x
