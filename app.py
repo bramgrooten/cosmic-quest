@@ -1,7 +1,7 @@
 from flask import Flask
 from map_generation import map_generation
-import numpy as np
 from recommender import recommend
+from planets import planet_argmax
 import copy
 
 app = Flask(__name__)
@@ -53,7 +53,7 @@ def move():
 
     num_to_add = 3
     for i in range(num_to_add):
-        new_planet_index = max(range(len(scores_and_origins)), key=lambda i: scores_and_origins[i][0])
+        new_planet_index = planet_argmax(scores_and_origins)
         from_planet_index = scores_and_origins[new_planet_index][1]
 
         new_planets.append(new_planet_index)
@@ -77,3 +77,6 @@ def move():
 # old add best planet:
 #     new_planet_index = np.argmax(scores_and_origins)
 #     galaxy_map.human_colony.append(new_planet_index)
+
+
+
