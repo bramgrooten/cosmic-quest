@@ -49,11 +49,15 @@ class map_generation:
         json_map = {
             "star_list": star_list,
             "planet_list": planet_list,
-            "dist_map": Map.dist_map
+            #"dist_map": Map.dist_map
         }
         with open("map.json", "w") as outfile:
             json.dump(json_map, outfile)
         # return json_map
+
+    def test_for_demo(self):
+        map = json.load("map.json", Map)
+
 
     def generate(self):
         # determine how many stars we need
@@ -69,9 +73,9 @@ class map_generation:
             self.generate_star_system_distribution(self, star, planet_count)
 
         # determine distances between planets
-        self.determine_distances(self)
+        #self.determine_distances(self)
 
         # save the map to json
         self.save_map_to_json(self, Map)
         
-
+        self.test_for_demo(self)
