@@ -1,4 +1,4 @@
-from temp_planet import Planet
+from planets import Planet
 
 class map_generation:
     def generate():
