@@ -1,35 +1,21 @@
 from dataclasses import dataclass
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 @dataclass
 class Planet:
-    def __init__(self, config):
+    def __init__(self):
         self.x = config['x']
         self.y = config['y']
+        self.dist_to_star = config['dist_to_star']
 
-        self.temperature = config.get('temperature', None)
-        self.min_temperature = config.get('min_temperature', None)
-        self.max_temperature = config.get('max_temperature', None)
-
-        self.atmospheric_pressure = config.get('atmospheric_pressure', None)
-        self.atmospheric_composition = config.get('atmospheric_composition', None)
-        self.atmosphere_height = config.get('atmosphere_height', None)
-
-        self.solid_surface_fraction = config.get('solid_surface_fraction', None)
-        self.surface_composition = config.get('surface_composition', None)
-        self.surface_water = config.get('surface_water', None)
-        self.surface_ice = config.get('surface_ice', None)
-
-        self.avg_distance_from_star = config.get('avg_distance_from_star', None)
-        self.gravity = config.get('gravity', None)
+        self.mass = config.get('mass', None)
         self.radius = config.get('radius', None)
+        self.orbital_period = config.get('period', None)
+        self.star_mass = config.get('star_mass', None)
+        self.star_radius = config.get('star_radius', None)
+        self.star_temperature = config.get('star_temp', None)
+        self.star_age = config.get('star_age', None)
 
-        self.orbital_period = config.get('orbital_period', None)
-        self.length_of_day = config.get('length_of_day', None)
-        self.orbital_eccentricity = config.get('orbital_eccentricity', None)
-        self.orbital_inclination = config.get('orbital_inclination', None)
 
 
 
@@ -41,23 +27,27 @@ def generate_planet():
 
 
 
-
-if __name__ == '__main__':
-
-    stars = []
-    for i in range(1000):
-        x, y = generate_star()
-        stars.append((x, y))
-
-    # make a scatter plot of the stars
-    x, y = zip(*stars)
-    plt.scatter(x, y)
-    plt.show()
-
-
-
-
-
+# self.temperature = config.get('temperature', None)
+# self.min_temperature = config.get('min_temperature', None)
+# self.max_temperature = config.get('max_temperature', None)
+#
+# self.atmospheric_pressure = config.get('atmospheric_pressure', None)
+# self.atmospheric_composition = config.get('atmospheric_composition', None)
+# self.atmosphere_height = config.get('atmosphere_height', None)
+#
+# self.solid_surface_fraction = config.get('solid_surface_fraction', None)
+# self.surface_composition = config.get('surface_composition', None)
+# self.surface_water = config.get('surface_water', None)
+# self.surface_ice = config.get('surface_ice', None)
+#
+# self.avg_distance_from_star = config.get('avg_distance_from_star', None)
+# self.gravity = config.get('gravity', None)
+# # self.radius = config.get('radius', None)
+#
+# # self.orbital_period = config.get('orbital_period', None)
+# self.length_of_day = config.get('length_of_day', None)
+# self.orbital_eccentricity = config.get('orbital_eccentricity', None)
+# self.orbital_inclination = config.get('orbital_inclination', None)
 
 
 # temperature  # in K, average temperature (Kelvin, 0 K = -273.15 C)
