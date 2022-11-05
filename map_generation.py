@@ -27,11 +27,11 @@ class map_generation:
 
     def determine_distances(self, galaxy_map):
         galaxy_map.dist_map = [[-1]*len(galaxy_map.planet_list)]*len(galaxy_map.planet_list)
-        for x in range(len(galaxy_map.planet_list)):
-            for y in range(len(galaxy_map.planet_list)):
+        for a in range(len(galaxy_map.planet_list)):
+            for b in range(len(galaxy_map.planet_list)):
                 # Can definitely be made more elegant, simple solution for now
-                galaxy_map.dist_map[x][y] = math.dist([galaxy_map.planet_list[x].x, galaxy_map.planet_list[x].y],
-                                                      [galaxy_map.planet_list[y].x, galaxy_map.planet_list[y].y])
+                galaxy_map.dist_map[a][b] = math.dist([galaxy_map.planet_list[a].x, galaxy_map.planet_list[a].y],
+                                                      [galaxy_map.planet_list[b].x, galaxy_map.planet_list[b].y])
                 # math.sqrt(pow(x,2) + pow(x,2))  abs(Map.planet_list[x] - Map.planet_list[y])
         return galaxy_map
 
@@ -56,11 +56,14 @@ class map_generation:
         json_map = {
             "star_list": star_list,
             "planet_list": planet_list,
-            #"dist_map": Map.dist_map,
+            # "dist_map": Map.dist_map,
             "human_colony": map.human_colony,
+            "connections": map.connections,
+            "new_human_colony_planets": map.new_human_colony_planets,
+            "new_connections": map.new_connections,
         }
-        with open("map.json", "w") as outfile:
-            json.dump(json_map, outfile)
+        # with open("map.json", "w") as outfile:
+        #     json.dump(json_map, outfile)
         return json_map
 
 
