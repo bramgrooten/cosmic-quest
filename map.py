@@ -9,3 +9,4 @@ class Map:
     star_list = []
     planet_list = []
     dist_map = []
+    human_colony = []
