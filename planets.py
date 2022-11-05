@@ -35,6 +35,17 @@ class Planet:
 
 
 
+def planet_argmax(scores_and_origins):
+    max_score = -1
+    max_index = -1
+    for i in range(len(scores_and_origins)):
+        if scores_and_origins[i][0] > max_score:
+            max_score = scores_and_origins[i][0]
+            max_index = i
+    return max_index
+
+
+
 
 
 if __name__ == '__main__':
