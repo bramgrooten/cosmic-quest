@@ -6,8 +6,6 @@ import numpy as np
 import math
 import json
 
-nr_of_planets = 0
-
 class map_generation:
     def generate_milkyway_distribution(self, star_count):
         for i in range(star_count):
@@ -28,9 +26,9 @@ class map_generation:
             star.planet_list.append(p)            
 
     def determine_distances(self):
-        Map.dist_map = [[-1]*nr_of_planets]*nr_of_planets
-        for x in range(nr_of_planets):
-            for y in range(nr_of_planets):
+        Map.dist_map = [[-1]*len(Map.planet_list)]*len(Map.planet_list)
+        for x in range(len(Map.planet_list)):
+            for y in range(len(Map.planet_list)):
                 # Can definitely be made more elegant, simple solution for now
                 Map.dist_map[x][y] = math.dist([Map.planet_list[x].x, Map.planet_list[x].y], [Map.planet_list[y].x, Map.planet_list[y].y]) #math.sqrt(pow(x,2) + pow(x,2))  abs(Map.planet_list[x] - Map.planet_list[y])
 
@@ -51,6 +49,7 @@ class map_generation:
         json_map = {
             "star_list": star_list,
             "planet_list": planet_list,
+            "dist_map": Map.dist_map
         }
         with open("map.json", "w") as outfile:
             json.dump(json_map, outfile)
