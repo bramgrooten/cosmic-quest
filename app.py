@@ -1,10 +1,13 @@
+import json
 from flask import Flask
 from map_generation import map_generation
 from recommender import recommend
 from planets import planet_argmax
+from flask_cors import CORS
 import copy
 
 app = Flask(__name__)
+CORS(app)
 
 global map_generator
 map_generator = map_generation()
@@ -77,6 +80,3 @@ def move():
 # old add best planet:
 #     new_planet_index = np.argmax(scores_and_origins)
 #     galaxy_map.human_colony.append(new_planet_index)
-
-
-

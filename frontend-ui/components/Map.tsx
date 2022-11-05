@@ -2,11 +2,7 @@ import { popper } from "@popperjs/core";
 import dynamic from "next/dynamic";
 import { release } from "os";
 import p5Types from "p5";
-
-// Will only import `react-p5` on client-side
-const Sketch = dynamic(() => import("react-p5").then((mod) => mod.default), {
-  ssr: false,
-});
+import { interpolateHex } from "../helpers/interpolateHex";
 
 export enum PlanetState {
   DISCOVERED = "#C9AF80",
@@ -27,6 +23,7 @@ type Planet = {
   radius: number;
   temperature: number;
   status: PlanetState;
+  habitable: number;
 };
 
 interface MapProps {
@@ -54,6 +51,10 @@ function scaleWithZoom(scale: number, currentScale: number) {
 }
 
 export default function Map({ width, height, bodies, scale }: MapProps) {
+  // Will only import `react-p5` on client-side
+  const Sketch = dynamic(() => import("react-p5").then((mod) => mod.default), {
+    ssr: false,
+  });
   const zoomSensitivity = 0.1;
   // Scale while drawing objects
   // Start with a scale of 1
@@ -82,7 +83,7 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     bodies.forEach((star) => {
       drawStar(p5, star);
       star.planet_list.forEach((planet) => {
-        drawPlanet(p5, planet);
+        //drawPlanet(p5, planet);
       });
     });
     p5.pop();
@@ -129,7 +130,9 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
   };
 
   const drawPlanet = (p5: p5Types, planet: Planet) => {
-    let color = p5.color(planet.status);
+    let color = p5.color(
+      interpolateHex("#7BCD57", "#CD5757", planet.habitable)
+    );
     p5.fill(color);
     p5.noStroke();
 
