@@ -3,9 +3,11 @@ from dataclasses import dataclass
 
 @dataclass
 class Planet:
-    def __init__(self, config):
+    def __init__(self):
         self.x = config['x']
         self.y = config['y']
+        self.dist_to_star = config['dist_to_star']
+
         self.mass = config.get('mass', None)
         self.radius = config.get('radius', None)
         self.orbital_period = config.get('period', None)
