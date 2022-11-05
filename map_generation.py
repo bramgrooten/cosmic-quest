@@ -1,12 +1,13 @@
 from planets import Planet
 from map import Map
+from stars import Star
 
 nr_of_planets = 0
 
 class map_generation:
-    def generate_milkyway_distribution(star_count):
+    def generate_milkyway_distribution(self, star_count):
         for i in range(star_count):
-            Map.star_list.append(TODO: create star class)
+            Map.star_list.append(Star())
     
     def generate_star_system_distribution():
         for i in star.planet_count:
