@@ -9,7 +9,7 @@ map = map2.generate()
 
 @app.route("/init_galaxy")
 def init_galaxy():
-    return map.save_map_to_json(map)
+    return map2.save_map_to_json(map)
 
 
 @app.route("/move")
