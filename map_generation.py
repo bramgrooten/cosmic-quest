@@ -5,7 +5,6 @@ from stars import Star
 import numpy as np
 import math
 import json
-import run_demo
 
 class map_generation:
     def generate_milkyway_distribution(self, star_count):
@@ -59,10 +58,7 @@ class map_generation:
         }
         with open("map.json", "w") as outfile:
             json.dump(json_map, outfile)
-        # return json_map
-
-    def test_for_demo(self):
-        map = json.load("map.json", Map)
+        return json_map
 
 
     def generate(self):
@@ -85,7 +81,7 @@ class map_generation:
         self.init_human_colony()
 
         # save the map to json
-        self.save_map_to_json(Map)
-        run_demo.map = Map
-        
-        self.test_for_demo(self)
+        #return self.save_map_to_json(Map)
+
+        return Map
+
