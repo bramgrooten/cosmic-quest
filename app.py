@@ -7,9 +7,10 @@ app = Flask(__name__)
 map2 = map_generation()
 map = map2.generate()
 
-@app.route("/state")
-def test():
-    return map
+@app.route("/init_galaxy")
+def init_galaxy():
+    return map.save_map_to_json(map)
+
 
 @app.route("/move")
 def move():

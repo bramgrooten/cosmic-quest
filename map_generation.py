@@ -81,7 +81,7 @@ class map_generation:
         self.init_human_colony()
 
         # save the map to json
-        self.save_map_to_json(Map)
+        # self.save_map_to_json(Map)
 
         return Map
 
