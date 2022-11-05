@@ -3,24 +3,29 @@ import { Box, Grid, GridItem, SimpleGrid } from "@chakra-ui/layout";
 import { ButtonGroup, Flex, IconButton, Spacer } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Dashboard from "../components/Dashboard";
-import Map, { PlanetState, Star } from "../components/Map";
+import Map, { Planet, PlanetState, Star } from "../components/Map";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+
+export type GalaxyData = {
+  star_list: Star[];
+  planet_list: Planet[];
+  human_colony: number[];
+  connections: [number, number][];
+  new_connections: [number, number][];
+  scores: number[];
+};
 
 export default function Page() {
   const { height, width } = useWindowDimensions();
   const [scale, setScale] = useState(1);
-  const [bodies, setBodies] = useState<Star[]>([]);
+  const [bodies, setBodies] = useState<GalaxyData>();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/init_galaxy")
+    fetch("http://127.0.0.1:5000/move")
       .then((res) => res.json())
-      .then((data) => {
-        data.star_list.forEach((star: Star) => {
-          star.planet_list.forEach((planet) => {
-            planet["habitable"] = Math.random();
-          });
-        });
-        setBodies(data.star_list);
+      .then((data: GalaxyData) => {
+        console.log(data);
+        setBodies(data);
       });
   }, []);
 
@@ -41,12 +46,14 @@ export default function Page() {
             />
           </ButtonGroup>
         </Flex>
-        <Map
-          width={(width * 2) / 3}
-          height={height}
-          bodies={bodies}
-          scale={scale}
-        />
+        {bodies && (
+          <Map
+            width={(width * 2) / 3}
+            height={height}
+            bodies={bodies}
+            scale={scale}
+          />
+        )}
       </GridItem>
       <GridItem>
         <Dashboard />

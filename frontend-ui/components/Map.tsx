@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { release } from "os";
 import p5Types from "p5";
 import { interpolateHex } from "../helpers/interpolateHex";
+import { GalaxyData } from "../pages";
 
 export enum PlanetState {
   DISCOVERED = "#C9AF80",
@@ -15,7 +16,7 @@ export type Star = {
   planet_list: Planet[];
 };
 
-type Planet = {
+export type Planet = {
   x: number;
   y: number;
   dist_to_star: number;
@@ -30,7 +31,7 @@ interface MapProps {
   width: number;
   height: number;
   scale: number;
-  bodies: Star[];
+  bodies: GalaxyData;
 }
 
 function scaleCoordinate(
@@ -47,8 +48,7 @@ function scaleCoordinate(
 }
 
 function scaleWithZoom(scale: number, currentScale: number) {
-  return scale * ((0.8 / (currentScale-0.2))+0.2)
-  return scale * (2 / currentScale) - 0.2;
+  return scale * (0.8 / (currentScale - 0.2) + 0.2);
 }
 
 export default function Map({ width, height, bodies, scale }: MapProps) {
@@ -81,14 +81,19 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     p5.push();
     p5.translate(transformX, transformY);
     p5.scale(currentScale);
-    bodies.forEach((star) => {
+    let planetIndex = 0;
+    bodies.star_list.forEach((star) => {
       drawStar(p5, star);
       star.planet_list.forEach((planet) => {
-        if (currentScale > 6) { 
-          drawPlanet(p5, planet)
-        };
+        //console.log(bodies.scores);
+        planet["habitable"] = bodies.scores[planetIndex];
+        if (currentScale > 6) {
+          drawPlanet(p5, planet);
+        }
+        planetIndex++;
       });
     });
+    drawColony(p5, bodies.human_colony, bodies.connections);
     p5.pop();
   };
 
@@ -125,16 +130,58 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     return false;
   };
 
-  const drag = (p5: any) => {
+  const drag = (p5: p5Types) => {
     if (isMouseDragged) {
       transformX += -(p5.mouseX - mousePressedX!) * 0.3;
       transformY += -(p5.mouseY - mousePressedY!) * 0.3;
     }
   };
 
+  const drawColony = (
+    p5: p5Types,
+    colonies: number[],
+    connections: [number, number][]
+  ) => {
+    let color = p5.color("#0000FF");
+    p5.fill(color);
+    p5.noStroke();
+
+    colonies.forEach((colony) => {
+      const planet = bodies.planet_list[colony];
+      const { scaledX, scaledY } = scaleCoordinate(
+        planet.x,
+        planet.y,
+        width,
+        height
+      );
+      p5.circle(scaledX, scaledY, scaleWithZoom(scale * 1.5, currentScale) * 3);
+    });
+
+    p5.stroke("#0000FF");
+    p5.strokeWeight(scaleWithZoom(scale * 0.5, currentScale));
+    connections.forEach((connection) => {
+      const planetStart = bodies.planet_list[connection[0]];
+      const planetEnd = bodies.planet_list[connection[1]];
+
+      const { scaledX: scaledStartX, scaledY: scaledStartY } = scaleCoordinate(
+        planetStart.x,
+        planetStart.y,
+        width,
+        height
+      );
+      const { scaledX: scaledEndX, scaledY: scaledEndY } = scaleCoordinate(
+        planetEnd.x,
+        planetEnd.y,
+        width,
+        height
+      );
+      p5.line(scaledStartX, scaledStartY, scaledEndX, scaledEndY);
+    });
+  };
+
   const drawPlanet = (p5: p5Types, planet: Planet) => {
     let color = p5.color(
-      interpolateHex("#7BCD57", "#CD5757", planet.habitable)
+      interpolateHex("#CD5757", "#7BCD57", planet.habitable / 100)
     );
     p5.fill(color);
     p5.noStroke();
@@ -146,7 +193,7 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
       height
     );
 
-    p5.circle(scaledX, scaledY, scaleWithZoom(scale*1.5, currentScale));
+    p5.circle(scaledX, scaledY, scaleWithZoom(scale * 1.5, currentScale));
   };
 
   const drawStar = (p5: p5Types, star: Star) => {

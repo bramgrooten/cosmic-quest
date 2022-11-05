@@ -9,64 +9,41 @@ import copy
 app = Flask(__name__)
 CORS(app)
 
-global map_generator
 map_generator = map_generation()
-global galaxy_map
 galaxy_map = map_generator.generate()
 galaxy_map = map_generator.determine_distances(galaxy_map)
-global kaas
-kaas = 0
+timestep = 0
 
 @app.route("/init_galaxy")
 def init_galaxy():
-    #return json.load(open("planets.json"))
-    global galaxy_map
-    global map_generator
-    global kaas
-    kaas += 1
-    map = copy.deepcopy(galaxy_map)
-    if kaas <= 1:
-        star_list = []
-        planet_list = []
-        for s in map.star_list:
-            for p in s.planet_list:
-                planet_list.append(copy.deepcopy(p).__dict__)
-            s.planet_list = planet_list
-            planet_list = []
-            star_list.append(copy.deepcopy(s).__dict__)
-        
-        planet_list = []
-        for p in map.planet_list:
-            planet_list.append(copy.deepcopy(p).__dict__)
-    else:
-        #star_list = map.star_list
-        star_list = []
-        for s in map.star_list:
-            star_list.append(copy.deepcopy(s).__dict__)
-        planet_list = map.planet_list
-
-    json_map = {
-        "star_list": star_list,
-        "planet_list": planet_list,
-        #"dist_map": Map.dist_map,
-        "human_colony": map.human_colony,
-    }
-    json_map2 = copy.deepcopy(json_map)
-    del json_map
-    return json_map2
-    return map_generator.save_map_to_json(galaxy_map)
+    star_list1 = copy.deepcopy(galaxy_map.star_list)
+    planet_list1 = copy.deepcopy(galaxy_map.planet_list)
+    human_colony1 = copy.deepcopy(galaxy_map.human_colony)
+    connections1 = copy.deepcopy(galaxy_map.connections)
+    new_human_colony_planets1 = copy.deepcopy(galaxy_map.new_human_colony_planets)
+    new_connections1 = copy.deepcopy(galaxy_map.new_connections)
+    scores1 = copy.deepcopy(galaxy_map.scores)
+    return map_generator.save_map_elements_to_json(star_list1, planet_list1, human_colony1, connections1,
+                                                   new_human_colony_planets1, new_connections1, scores1)
 
 
 @app.route("/move")
 def move():
+    global timestep
+    timestep += 1
+
     # get recommendations for next planet to colonize
     scores_and_origins = recommend(galaxy_map)
+    scores = []
+    for s in scores_and_origins:
+        scores.append(s[0])
+    galaxy_map.scores = scores
 
     # add the num_to_add best planet(s) to human colony
     new_planets = []
     new_connections = []
 
-    num_to_add = 3
+    num_to_add = set_num_planets_to_add(timestep)
     for i in range(num_to_add):
         new_planet_index = planet_argmax(scores_and_origins)
         from_planet_index = scores_and_origins[new_planet_index][1]
@@ -84,11 +61,31 @@ def move():
     galaxy_map.new_connections = new_connections
     galaxy_map.new_human_colony_planets = new_planets
 
-    # return the new human colony to frontend
-    return map_generator.save_map_to_json(galaxy_map)
+    star_list1 = copy.deepcopy(galaxy_map.star_list)
+    planet_list1 = copy.deepcopy(galaxy_map.planet_list)
+    human_colony1 = copy.deepcopy(galaxy_map.human_colony)
+    connections1 = copy.deepcopy(galaxy_map.connections)
+    new_human_colony_planets1 = copy.deepcopy(galaxy_map.new_human_colony_planets)
+    new_connections1 = copy.deepcopy(galaxy_map.new_connections)
+    scores1 = copy.deepcopy(galaxy_map.scores)
 
+    # return the new human colony to frontend
+    return map_generator.save_map_elements_to_json(star_list1, planet_list1, human_colony1, connections1,
+                                                   new_human_colony_planets1, new_connections1, scores1)
 
 
 # old add best planet:
 #     new_planet_index = np.argmax(scores_and_origins)
 #     galaxy_map.human_colony.append(new_planet_index)
+
+
+
+def set_num_planets_to_add(timestep):
+    if timestep < 3:
+        return 1
+    elif timestep < 7:
+        return 2
+    elif timestep < 12:
+        return 3
+    else:
+        return 4
