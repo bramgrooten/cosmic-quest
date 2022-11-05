@@ -27,7 +27,7 @@ class map_generation:
 
     def determine_distances(self, galaxy_map):
         galaxy_map.dist_map = [[-1]*len(galaxy_map.planet_list)]*len(galaxy_map.planet_list)
-        print(galaxy_map.dist_map[0])
+        #print(galaxy_map.dist_map[0])
         for a in range(len(galaxy_map.planet_list)):
             for b in range(len(galaxy_map.planet_list)):
                 # Can definitely be made more elegant, simple solution for now
@@ -75,20 +75,20 @@ class map_generation:
         # determine how many stars we need
         star_count = 2000
         # determine where the stars are
-        self.generate_milkyway_distribution(self, star_count)
+        self.generate_milkyway_distribution(star_count)
 
         # for each star...
         for i, star in enumerate(Map.star_list):
             # determine how many planets
             planet_count = 3#random.randint(1, 5)
             # for each star, determine where planets are
-            self.generate_star_system_distribution(self, star, planet_count)
+            self.generate_star_system_distribution(star, planet_count)
 
         # determine distances between planets
         #self.determine_distances()
 
         # determine where the human colony starts
-        self.init_human_colony(self)
+        self.init_human_colony()
 
         # save the map to json
         # self.save_map_to_json(Map)
