@@ -6,5 +6,6 @@ class Map:
         temperature = newTemperature
         pass
 
+    star_list = []
     planet_list = []
     dist_map = []
