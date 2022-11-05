@@ -43,12 +43,17 @@ class map_generation:
         # for each star...
         for i, star in enumerate(Map.star_list):
             # determine how many planets
+<<<<<<< HEAD
             planet_count =  3#random.randint(1, 5)
+=======
+            planet_count = random.randint(1, 5)
+>>>>>>> 30d7ff3b209b131387978c1c79caf6215ad3750e
             # for each star, determine where planets are
             self.generate_star_system_distribution(self, star, planet_count)
 
         # determine distances between planets
         self.determine_distances(self)
+<<<<<<< HEAD
         # save the map to json
         star_list = []
         planet_list = []
@@ -69,3 +74,5 @@ class map_generation:
         with open("test.json", "w") as outfile:
             json.dump(json_map, outfile)
 
+=======
+>>>>>>> 30d7ff3b209b131387978c1c79caf6215ad3750e

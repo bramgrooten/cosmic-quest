@@ -10,15 +10,22 @@ class Planet:
         self.generate_planet_properties()
 
     def generate_planet_properties(self):
-        # right-tailed distribution for mass of the planet, mean 1, tail until 4000
-        self.mass = np.random.uniform(1, 4000)  # in Earth masses
-        self.radius = np.random.uniform(0, 15)  # in Earth radii
-        self.orbital_period = np.random.uniform(0, 100_000)  # in days
-        self.star_mass = np.random.uniform(0, 99)  # in solar masses
-        self.star_radius = np.random.uniform(0, 99)  # in solar radii
-        self.star_temperature = np.random.uniform(0, 40_000)  # in Kelvin
-        # see https://link.springer.com/referenceworkentry/10.1007/978-3-642-11274-4_487
-        self.star_age = np.random.uniform(0, 13.8)  # in Gy (billion years)
+        self.radius = np.random.uniform(0, 100_000)  # in km (jupiter radius = 69_911 km)
+        self.density = np.random.uniform(0, 10)  # in g/cm^3 (earth density = 5.5 g/cm^3)
+        self.escape_velocity = np.random.uniform(0, 100)  # in km/s (jupiter escape velocity = 60.2 km/s)
+        self.surface_temperature = np.random.uniform(0, 1000)  # in Kelvin (earth surface temperature = 288 K)
+
+    # version with 7 properties
+    # def generate_planet_properties(self):
+    #     # right-tailed distribution for mass of the planet, mean 1, tail until 4000
+    #     self.mass = np.random.uniform(1, 4000)  # in Earth masses
+    #     self.radius = np.random.uniform(0, 15)  # in Earth radii
+    #     self.orbital_period = np.random.uniform(0, 100_000)  # in days
+    #     self.star_mass = np.random.uniform(0, 99)  # in solar masses
+    #     self.star_radius = np.random.uniform(0, 99)  # in solar radii
+    #     self.star_temperature = np.random.uniform(0, 40_000)  # in Kelvin
+    #     # see https://link.springer.com/referenceworkentry/10.1007/978-3-642-11274-4_487
+    #     self.star_age = np.random.uniform(0, 13.8)  # in Gy (billion years)
 
 
 
