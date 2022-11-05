@@ -1,6 +1,6 @@
 from flask import Flask
 from map_generation import map_generation
-
+import numpy as np
 
 app = Flask(__name__)
 
@@ -13,18 +13,16 @@ def test():
 
 @app.route("/move")
 def move():
-    print(map.planet_list)
-    return
-    # # get current human colony
-    # check if new != empty
-    #     add new to colony list
+    # get recommendations for next planet to colonize
+    planet_scores = recommender.get_planet_scores()
 
-    # # get recommendations for next planet to colonize
-    # scores = recommender() 
-    # # add best planet to human colony
-    # add best candidate to new
-    # # return the new human colony to frontend
-    # return 
+    # add best planet to human colony
+    new_planet_index = np.argmax(planet_scores)
+    galaxy_map.human_colony.append(new_planet_index)
+
+    # return the new human colony to frontend
+    galaxy_map.save_map_to_json(galaxy_map)
+
 
 
 
