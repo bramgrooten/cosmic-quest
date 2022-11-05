@@ -1,9 +1,12 @@
+import json
 from flask import Flask
 from map_generation import map_generation
 import numpy as np
 from recommender import recommend
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 map_generator = map_generation()
 galaxy_map = map_generator.generate()
@@ -11,10 +14,7 @@ galaxy_map = map_generator.determine_distances(galaxy_map)
 
 @app.route("/init_galaxy")
 def init_galaxy():
-    global galaxy_map
-    
-    galaxy_map = map_generator.generate()
-    return map_generator.save_map_to_json(galaxy_map)
+    return json.load(open('planets.json'))
 
 
 @app.route("/move")
