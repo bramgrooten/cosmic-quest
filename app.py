@@ -1,10 +1,13 @@
+import json
 from flask import Flask
 from map_generation import map_generation
 import numpy as np
 from recommender import recommend
+from flask_cors import CORS
 import copy
 
 app = Flask(__name__)
+CORS(app)
 
 global map_generator
 map_generator = map_generation()
