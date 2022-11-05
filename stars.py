@@ -14,7 +14,7 @@ def generate_star():
     while r <= 0:
         r = np.random.normal(25_000, 7_000)
     angle = r/10000 + np.random.random_integers(0, 1) * np.pi#np.random.uniform(0, 2*np.pi)
-    angle += np.random.normal(np.pi*r/40000, np.pi*r/180000)
+    angle += np.random.normal(np.pi*r/40000, np.pi*r/140000)
 
     if r > 100_000:  # get r back in range
         r = 100_000 - (r - 100_000)
