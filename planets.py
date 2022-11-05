@@ -1,29 +1,40 @@
 from dataclasses import dataclass
+import numpy as np
 
 
 @dataclass
 class Planet:
-    def __init__(self):
-        self.x = config['x']
-        self.y = config['y']
-        self.dist_to_star = config['dist_to_star']
+    def __init__(self, x, y, r):
+        self.x = x
+        self.y = y
+        self.dist_to_star = r
+        self.generate_planet_properties()
 
-        self.mass = config.get('mass', None)
-        self.radius = config.get('radius', None)
-        self.orbital_period = config.get('period', None)
-        self.star_mass = config.get('star_mass', None)
-        self.star_radius = config.get('star_radius', None)
-        self.star_temperature = config.get('star_temp', None)
-        self.star_age = config.get('star_age', None)
+    def generate_planet_properties(self):
+        # right-tailed distribution for mass of the planet, mean 1, tail until 4000
+        self.mass = np.random.uniform(1, 4000)  # in Earth masses
+        self.radius = np.random.uniform(0, 15)  # in Earth radii
+        self.orbital_period = np.random.uniform(0, 100_000)  # in days
+        self.star_mass = np.random.uniform(0, 99)  # in solar masses
+        self.star_radius = np.random.uniform(0, 99)  # in solar radii
+        self.star_temperature = np.random.uniform(0, 40_000)  # in Kelvin
+        # see https://link.springer.com/referenceworkentry/10.1007/978-3-642-11274-4_487
+        self.star_age = np.random.uniform(0, 13.8)  # in Gy (billion years)
 
 
 
 
 
 
+if __name__ == '__main__':
 
-def generate_planet():
-    pass
+    import matplotlib.pyplot as plt
+    masses = []
+    for i in range(1000):
+        masses.append(np.random.lognormal(0, 5))
+    # plot log-normal distribution
+    plt.hist(masses, bins=100)
+    plt.show()
 
 
 

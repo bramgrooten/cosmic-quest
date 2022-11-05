@@ -22,7 +22,7 @@ class map_generation:
             # convert to cartesian coordinates
             x = star.x + r * np.cos(angle)
             y = star.y + r * np.sin(angle)
-            p = Planet(x, y)
+            p = Planet(x, y, r)
             Map.planet_list.append(p)
             star.planet_list.append(p)
 
