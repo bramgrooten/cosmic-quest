@@ -47,4 +47,4 @@ class map_generation:
             self.generate_star_system_distribution(self, star, planet_count)
 
         # determine distances between planets
-        self.determine_distances()
+        self.determine_distances(self)
