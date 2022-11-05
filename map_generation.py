@@ -26,17 +26,17 @@ class map_generation:
             star.planet_list.append(p)            
 
     def determine_distances(self, galaxy_map):
-        galaxy_map.dist_map = [[-1]*len(galaxy_map.planet_list)]*len(galaxy_map.planet_list)
-        print(galaxy_map.dist_map[0])
+        galaxy_map.dist_map = [None] * len(galaxy_map.planet_list)
+        for a in range(len(galaxy_map.planet_list)):
+            galaxy_map.dist_map[a] = [0] * len(galaxy_map.planet_list)
+        
         for a in range(len(galaxy_map.planet_list)):
             for b in range(len(galaxy_map.planet_list)):
                 # Can definitely be made more elegant, simple solution for now
                 galaxy_map.dist_map[a][b] = math.dist([galaxy_map.planet_list[a].x, galaxy_map.planet_list[a].y],
                                                       [galaxy_map.planet_list[b].x, galaxy_map.planet_list[b].y])
                 # math.sqrt(pow(x,2) + pow(x,2))  abs(Map.planet_list[x] - Map.planet_list[y])
-        #print(galaxy_map.dist_map[0])
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        #print(galaxy_map.dist_map[1])
+
         return galaxy_map
 
     def init_human_colony(self):
@@ -75,20 +75,20 @@ class map_generation:
         # determine how many stars we need
         star_count = 2000
         # determine where the stars are
-        self.generate_milkyway_distribution(self, star_count)
+        self.generate_milkyway_distribution(star_count)
 
         # for each star...
         for i, star in enumerate(Map.star_list):
             # determine how many planets
             planet_count = 3#random.randint(1, 5)
             # for each star, determine where planets are
-            self.generate_star_system_distribution(self, star, planet_count)
+            self.generate_star_system_distribution(star, planet_count)
 
         # determine distances between planets
         #self.determine_distances()
 
         # determine where the human colony starts
-        self.init_human_colony(self)
+        self.init_human_colony()
 
         # save the map to json
         # self.save_map_to_json(Map)

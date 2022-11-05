@@ -11,7 +11,7 @@ class Planet:
 
     def generate_planet_properties(self):
         self.radius = np.random.gamma(shape=2, scale=2)  # in earth radii (max around 20)
-        self.mass = np.random.gamma(shape=2, scale=400)  # in earth mass (max around 3000)
+        self.mass = np.random.gamma(shape=1, scale=400)  # in earth mass (max around 3000)
         self.temperature = np.random.gamma(shape=2, scale=150)  # in kelvin (max around 1000)
 
         # old version (uniform distribution)
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     # plt.show()
 
     import matplotlib.pyplot as plt
-    s = np.random.gamma(shape=2, scale=400, size=1000)
+    s = np.random.gamma(shape=2, scale=170, size=1000)
     plt.hist(s, 70, density=True)
     plt.show()
 
