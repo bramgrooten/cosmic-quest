@@ -7,5 +7,5 @@ def planet_score(dist, rad, mass, temp):
   ESI = calc_esi(rad, mass, temp)
   
   # closer is better
-  dist = max(100 - dist**1.2, 0)
+  dist = max(100 - dist, 0)
   return dist * ESI
