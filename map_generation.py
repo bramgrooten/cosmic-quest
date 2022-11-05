@@ -50,10 +50,11 @@ class map_generation:
 
         json_map = {
             "star_list": star_list,
-            "planet_list": planet_list
+            "planet_list": planet_list,
         }
         with open("map.json", "w") as outfile:
             json.dump(json_map, outfile)
+        # return json_map
 
     def generate(self):
         # determine how many stars we need
