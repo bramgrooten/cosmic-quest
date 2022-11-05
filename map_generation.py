@@ -20,11 +20,19 @@ class map_generation:
             if r > 100_0:  # get r back in range
                 r = 100_0 - (r - 100_0)
             # convert to cartesian coordinates
+<<<<<<< HEAD
+            p.x = star.x + r * np.cos(angle)
+            p.y = star.y + r * np.sin(angle)
+    
+    def generate_planet(self):
+        TODO
+=======
             x = star.x + r * np.cos(angle)
             y = star.y + r * np.sin(angle)
             p = Planet(x, y, r)
             Map.planet_list.append(p)
             star.planet_list.append(p)
+>>>>>>> d055a752337742c990c5753c7caf51a4213626ab
 
     def determine_distances(self):
         Map.dist_map = [[-1]*nr_of_planets]*nr_of_planets
@@ -42,6 +50,14 @@ class map_generation:
         # for each star...
         for star in Map.star_list:
             # determine how many planets
+<<<<<<< HEAD
+            planet_count =  random.range(4) #4
+            # for each star, determine where planets are
+            self.generate_star_system_distribution(star, planet_count)
+
+        # determine distances between planets
+        self.determine_distances()
+=======
             planet_count = random.range(4)  # 4
             # for each star, determine where planets are
             self.generate_star_system_distribution(self, star, planet_count)
@@ -53,3 +69,4 @@ class map_generation:
     if __name__ == "__main__":
         # generate and fill in nr_of_profiles profiles
         generate()
+>>>>>>> d055a752337742c990c5753c7caf51a4213626ab

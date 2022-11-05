@@ -7,4 +7,4 @@ if __name__ == "__main__":
     # generate and fill in nr_of_profiles profiles
     mg = map_generation
     #map_generation.generate()
-    mg.generate()
+    mg.generate(mg)
