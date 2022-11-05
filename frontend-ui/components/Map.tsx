@@ -47,6 +47,7 @@ function scaleCoordinate(
 }
 
 function scaleWithZoom(scale: number, currentScale: number) {
+  return scale * ((0.8 / (currentScale-0.2))+0.2)
   return scale * (2 / currentScale) - 0.2;
 }
 
@@ -83,7 +84,9 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     bodies.forEach((star) => {
       drawStar(p5, star);
       star.planet_list.forEach((planet) => {
-        //drawPlanet(p5, planet);
+        if (currentScale > 6) { 
+          drawPlanet(p5, planet)
+        };
       });
     });
     p5.pop();
@@ -143,7 +146,7 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
       height
     );
 
-    p5.circle(scaledX, scaledY, scaleWithZoom(scale, currentScale));
+    p5.circle(scaledX, scaledY, scaleWithZoom(scale*1.5, currentScale));
   };
 
   const drawStar = (p5: p5Types, star: Star) => {
