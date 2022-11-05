@@ -3,9 +3,9 @@ from dataclasses import dataclass
 
 @dataclass
 class Planet:
-    def __init__(self):
-        self.x = config['x']
-        self.y = config['y']
+    def __init__(self, x = -1, y = -1):
+        self.x = x#config['x']
+        self.y = y#config['y']
         self.dist_to_star = config['dist_to_star']
 
         self.mass = config.get('mass', None)
