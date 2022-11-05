@@ -56,11 +56,14 @@ class map_generation:
         json_map = {
             "star_list": star_list,
             "planet_list": planet_list,
-            #"dist_map": Map.dist_map,
+            # "dist_map": Map.dist_map,
             "human_colony": map.human_colony,
+            "connections": map.connections,
+            "new_human_colony_planets": map.new_human_colony_planets,
+            "new_connections": map.new_connections,
         }
-        with open("map.json", "w") as outfile:
-            json.dump(json_map, outfile)
+        # with open("map.json", "w") as outfile:
+        #     json.dump(json_map, outfile)
         return json_map
 
 
