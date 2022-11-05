@@ -62,7 +62,7 @@ def move():
         new_planets.append(new_planet_index)
         new_connections.append((from_planet_index, new_planet_index))
 
-        scores_and_origins[new_planet_index][0] = -1  # set score to -1, so it won't be chosen again
+        scores_and_origins[new_planet_index] = (-1, -1)  # set score to -1, so it won't be chosen again
 
     # add previous move's "new" to the list of connections and planet
     galaxy_map.connections += galaxy_map.new_connections
