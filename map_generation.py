@@ -5,8 +5,7 @@ from stars import Star
 import numpy as np
 import math
 import json
-
-nr_of_planets = 0
+import run_demo
 
 class map_generation:
     def generate_milkyway_distribution(self, star_count):
@@ -28,11 +27,15 @@ class map_generation:
             star.planet_list.append(p)            
 
     def determine_distances(self):
-        Map.dist_map = [[-1]*nr_of_planets]*nr_of_planets
-        for x in range(nr_of_planets):
-            for y in range(nr_of_planets):
+        Map.dist_map = [[-1]*len(Map.planet_list)]*len(Map.planet_list)
+        for x in range(len(Map.planet_list)):
+            for y in range(len(Map.planet_list)):
                 # Can definitely be made more elegant, simple solution for now
                 Map.dist_map[x][y] = math.dist([Map.planet_list[x].x, Map.planet_list[x].y], [Map.planet_list[y].x, Map.planet_list[y].y]) #math.sqrt(pow(x,2) + pow(x,2))  abs(Map.planet_list[x] - Map.planet_list[y])
+
+    def init_human_colony(self):
+        first_planet_index = random.randint(0, len(Map.planet_list))
+        Map.human_colony.append(first_planet_index)
 
     def save_map_to_json(self, map):
         star_list = []
@@ -51,28 +54,38 @@ class map_generation:
         json_map = {
             "star_list": star_list,
             "planet_list": planet_list,
+            #"dist_map": Map.dist_map,
+            "human_colony": map.human_colony,
         }
         with open("map.json", "w") as outfile:
             json.dump(json_map, outfile)
         # return json_map
 
+    def test_for_demo(self):
+        map = json.load("map.json", Map)
+
+
     def generate(self):
         # determine how many stars we need
         star_count = 2000
         # determine where the stars are
-        self.generate_milkyway_distribution(self, star_count)
+        self.generate_milkyway_distribution(star_count)
 
         # for each star...
         for i, star in enumerate(Map.star_list):
             # determine how many planets
             planet_count = 3#random.randint(1, 5)
             # for each star, determine where planets are
-            self.generate_star_system_distribution(self, star, planet_count)
+            self.generate_star_system_distribution(star, planet_count)
 
         # determine distances between planets
-        self.determine_distances(self)
+        #self.determine_distances()
+
+        # determine where the human colony starts
+        self.init_human_colony()
 
         # save the map to json
-        self.save_map_to_json(self, Map)
+        self.save_map_to_json(Map)
+        run_demo.map = Map
         
-
+        self.test_for_demo(self)

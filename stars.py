@@ -12,7 +12,7 @@ class Star:
 def generate_star():
     r = np.random.normal(25_000, 7_000)
     angle = r/10000 + np.random.random_integers(0, 1) * np.pi#np.random.uniform(0, 2*np.pi)
-    angle += np.random.normal(np.pi*r/40000, np.pi*r/200000)
+    angle += np.random.normal(np.pi*r/40000, np.pi*r/180000)
 
 
     if r > 100_000:  # get r back in range
