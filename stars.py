@@ -11,9 +11,10 @@ class Star:
 # diameter of milky way galaxy: 100,000 light years. Center is (0,0)
 def generate_star():
     r = np.random.normal(25_000, 7_000)
+    while r <= 0:
+        r = np.random.normal(25_000, 7_000)
     angle = r/10000 + np.random.random_integers(0, 1) * np.pi#np.random.uniform(0, 2*np.pi)
     angle += np.random.normal(np.pi*r/40000, np.pi*r/180000)
-
 
     if r > 100_000:  # get r back in range
         r = 100_000 - (r - 100_000)
