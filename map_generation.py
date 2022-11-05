@@ -34,6 +34,27 @@ class map_generation:
                 # Can definitely be made more elegant, simple solution for now
                 Map.dist_map[x][y] = math.dist([Map.planet_list[x].x, Map.planet_list[x].y], [Map.planet_list[y].x, Map.planet_list[y].y]) #math.sqrt(pow(x,2) + pow(x,2))  abs(Map.planet_list[x] - Map.planet_list[y])
 
+    def save_map_to_json(self, map):
+        star_list = []
+        planet_list = []
+        for s in map.star_list:
+            for p in s.planet_list:
+                planet_list.append(p.__dict__)
+            s.planet_list = planet_list
+            planet_list = []
+            star_list.append(s.__dict__)
+        
+        planet_list = []
+        for p in map.planet_list:
+            planet_list.append(p.__dict__)
+
+        json_map = {
+            "star_list": star_list,
+            "planet_list": planet_list
+        }
+        with open("test.json", "w") as outfile:
+            json.dump(json_map, outfile)
+
     def generate(self):
         # determine how many stars we need
         star_count = 2000
@@ -51,23 +72,6 @@ class map_generation:
         self.determine_distances(self)
 
         # save the map to json
-        star_list = []
-        planet_list = []
-        for s in Map.star_list:
-            for p in s.planet_list:
-                planet_list.append(p.__dict__)
-            s.planet_list = planet_list
-            planet_list = []
-            star_list.append(s.__dict__)
+        self.save_map_to_json(self, Map)
         
-        planet_list = []
-        for p in Map.planet_list:
-            planet_list.append(p.__dict__)
-
-        json_map = {
-            "star_list": star_list,
-            "planet_list": planet_list
-        }
-        with open("test.json", "w") as outfile:
-            json.dump(json_map, outfile)
 
