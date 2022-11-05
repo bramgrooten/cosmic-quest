@@ -1,8 +1,6 @@
-
-
-
-
-def closest_colony_planet(colony_planets, new_planet, map):
+def closest_colony_planet(colony_planets,   # indices
+                          new_planet,       # index
+                          map):
     min_dist = float('inf')
     closest_col_planet = None
 

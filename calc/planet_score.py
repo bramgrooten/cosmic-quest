@@ -5,8 +5,9 @@ import math
 # score is based on planet habitability and distance
 def planet_score(dist, rad, mass, temp):
     # ESI is a measure related to habitability, to a high power to emphasise high habitability
-    ESI_val = calc_esi(rad, mass, temp)**5
+    ESI_val = calc_esi(rad, mass, temp)**3
 
     # closer is better
-    dist_val = 100*math.exp(-0.005*dist)
+    dist_val = 100*math.exp(-0.001*dist)
+
     return dist_val * ESI_val
