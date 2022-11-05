@@ -14,36 +14,47 @@ map_generator = map_generation()
 global galaxy_map
 galaxy_map = map_generator.generate()
 galaxy_map = map_generator.determine_distances(galaxy_map)
+global kaas
+kaas = 0
 
 @app.route("/init_galaxy")
 def init_galaxy():
-    return json.load(open("planets.json"))
-    # global galaxy_map
-    # global map_generator
-    # map = copy.deepcopy(galaxy_map)
-    # star_list = []
-    # planet_list = []
-    # for s in map.star_list:
-    #     for p in s.planet_list:
-    #         planet_list.append(p.__dict__)
-    #     s.planet_list = planet_list
-    #     planet_list = []
-    #     star_list.append(s.__dict__)
-    
-    # planet_list = []
-    # for p in map.planet_list:
-    #     planet_list.append(p.__dict__)
+    #return json.load(open("planets.json"))
+    global galaxy_map
+    global map_generator
+    global kaas
+    kaas += 1
+    map = copy.deepcopy(galaxy_map)
+    if kaas <= 1:
+        star_list = []
+        planet_list = []
+        for s in map.star_list:
+            for p in s.planet_list:
+                planet_list.append(copy.deepcopy(p).__dict__)
+            s.planet_list = planet_list
+            planet_list = []
+            star_list.append(copy.deepcopy(s).__dict__)
+        
+        planet_list = []
+        for p in map.planet_list:
+            planet_list.append(copy.deepcopy(p).__dict__)
+    else:
+        #star_list = map.star_list
+        star_list = []
+        for s in map.star_list:
+            star_list.append(copy.deepcopy(s).__dict__)
+        planet_list = map.planet_list
 
-    # json_map = {
-    #     "star_list": star_list,
-    #     "planet_list": planet_list,
-    #     #"dist_map": Map.dist_map,
-    #     "human_colony": map.human_colony,
-    # }
-    # json_map2 = copy.deepcopy(json_map)
-    # del json_map
-    # return json_map2
-    # return map_generator.save_map_to_json(galaxy_map)
+    json_map = {
+        "star_list": star_list,
+        "planet_list": planet_list,
+        #"dist_map": Map.dist_map,
+        "human_colony": map.human_colony,
+    }
+    json_map2 = copy.deepcopy(json_map)
+    del json_map
+    return json_map2
+    return map_generator.save_map_to_json(galaxy_map)
 
 
 @app.route("/move")
