@@ -1,4 +1,5 @@
 import json
+import random
 from flask import Flask
 from map_generation import map_generation
 from recommender import recommend
@@ -81,13 +82,13 @@ def move():
 @app.route("/reset")
 def reset():
     galaxy_map.human_colony = []
-
-    map_generator.init_human_colony()
-
+    first_planet_index = random.randint(0, len(galaxy_map.planet_list))
+    galaxy_map.human_colony.append(first_planet_index)
     galaxy_map.connections = []
     galaxy_map.new_human_colony_planets = []
     galaxy_map.new_connections = []
     galaxy_map.scores = []
+
 
 def set_num_planets_to_add(timestep):
     if timestep < 3:

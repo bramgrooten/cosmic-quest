@@ -39,10 +39,9 @@ class map_generation:
 
         return galaxy_map
 
-    def init_human_colony(self, galaxy_map):
-        first_planet_index = random.randint(0, len(galaxy_map.planet_list))
-        galaxy_map.human_colony.append(first_planet_index)
-        return galaxy_map
+    def init_human_colony(self):
+        first_planet_index = random.randint(0, len(Map.planet_list))
+        Map.human_colony.append(first_planet_index)
 
     def save_map_to_json(self, map):
         star_list = []
