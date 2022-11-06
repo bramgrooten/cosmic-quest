@@ -44,12 +44,12 @@ export default function Dashboard({ selectedPlanet }: DashboardProps) {
     );
   }
   return (
-    <Slide direction="right" in={isOpen} style={{ zIndex: 10 }}>
+    <Slide direction="right" in={isOpen} style={{ zIndex: 10, width: "30%" }}>
       <Box
         overflow={"hidden"}
         position={"absolute"}
         right="0"
-        w="30%"
+        w="100%"
         h="calc(100vh)"
         bg={interpolateHex("#1B191B", "#000000", 0.05)}
         borderLeft={`0.01rem solid rgba(201, 175, 128, .2)`}
@@ -88,7 +88,10 @@ export default function Dashboard({ selectedPlanet }: DashboardProps) {
               <Flex>
                 <Center w="100%">
                   <Badge variant="outline" colorScheme="green">
-                    HB23232
+                    {`${(Math.random() + 1)
+                      .toString(36)
+                      .substring(2)
+                      .toUpperCase()}`}
                   </Badge>
                 </Center>
               </Flex>
