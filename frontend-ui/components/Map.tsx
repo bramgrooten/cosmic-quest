@@ -66,8 +66,10 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
   let transformX = useRef(0);
   let transformY = useRef(0);
   let isMouseDragged = false;
-  let mousePressedX: number | null = null;
-  let mousePressedY: number | null = null;
+  let mousePressedX = useRef(0);
+  let mousePressedY = useRef(0);
+  let mouseX = useRef(1000);
+  let mouseY = useRef(1000);
   // See annotations in JS for more information
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     const cnv = p5.createCanvas(width, height).parent(canvasParentRef);
@@ -104,14 +106,14 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
   };
 
   const release = () => {
-    mousePressedX = null;
-    mousePressedY = null;
+    mousePressedX.current = 0;
+    mousePressedY.current = 0;
     isMouseDragged = false;
   };
 
   const press = (p5: p5Types) => {
-    mousePressedX = p5.mouseX;
-    mousePressedY = p5.mouseY;
+    mousePressedX.current = p5.mouseX;
+    mousePressedY.current = p5.mouseY;
     isMouseDragged = true;
   };
 
@@ -126,22 +128,33 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
       // Zoom out
       scaleFactor = 1 - zoomSensitivity;
     }
+    if (p5.mouseX !== 0 && p5.mouseY !== 0) {
+      mouseX.current = p5.mouseX;
+      mouseY.current = p5.mouseY;
+    }
 
     // Apply transformation and scale incrementally
     currentScale.current = currentScale.current * scaleFactor;
     transformX.current =
-      p5.mouseX - p5.mouseX * scaleFactor + transformX.current * scaleFactor;
+      mouseX.current -
+      mouseX.current * scaleFactor +
+      transformX.current * scaleFactor;
     transformY.current =
-      p5.mouseY - p5.mouseY * scaleFactor + transformY.current * scaleFactor;
+      mouseY.current -
+      mouseY.current * scaleFactor +
+      transformY.current * scaleFactor;
 
     // Disable page scroll
     return false;
   };
 
   const drag = (p5: p5Types) => {
+    mouseX.current = p5.mouseX;
+    mouseY.current = p5.mouseY;
+
     if (isMouseDragged) {
-      transformX.current += -(p5.mouseX - mousePressedX!) * 0.3;
-      transformY.current += -(p5.mouseY - mousePressedY!) * 0.3;
+      transformX.current += -(mouseX.current - mousePressedX.current!) * 0.3;
+      transformY.current += -(mouseY.current - mousePressedY.current!) * 0.3;
     }
   };
 
