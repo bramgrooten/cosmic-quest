@@ -82,6 +82,8 @@ def move():
 
 @app.route("/reset")
 def reset():
+    global timestep
+    timestep = 0
     galaxy_map.human_colony = []
     first_planet_index = random.randint(0, len(galaxy_map.planet_list))
     galaxy_map.human_colony.append(first_planet_index)
