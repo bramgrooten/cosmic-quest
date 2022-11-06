@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaPlay } from "react-icons/fa";
 import { interpolateHex } from "../helpers/interpolateHex";
 import { Planet } from "./Map";
@@ -27,6 +27,17 @@ interface DashboardProps {
 
 export default function Dashboard({ selectedPlanet }: DashboardProps) {
   const { isOpen, onToggle } = useDisclosure();
+  const old = useRef<number>();
+  const id = useRef<string>();
+
+  const getId = () => {
+    if (selectedPlanet?.radius !== old.current) {
+      id.current = (Math.random() + 1).toString(36).substring(2).toUpperCase();
+      old.current = selectedPlanet?.radius;
+    }
+
+    return id.current;
+  };
 
   if (!selectedPlanet) {
     return <></>;
@@ -65,11 +76,7 @@ export default function Dashboard({ selectedPlanet }: DashboardProps) {
         <Flex marginTop={10}>
           <Center w="100%">
             <Stack>
-              <Flex
-                //bg={interpolateHex("#1B191B", "#000000", 0.25)}
-                padding={4}
-                borderRadius={10}
-              >
+              <Flex padding={4} borderRadius={10}>
                 <Image
                   src="/planets/planet-2.svg"
                   alt="me"
@@ -81,10 +88,7 @@ export default function Dashboard({ selectedPlanet }: DashboardProps) {
               <Flex>
                 <Center w="100%">
                   <Badge variant="outline" colorScheme="green">
-                    {`${(Math.random() + 1)
-                      .toString(36)
-                      .substring(2)
-                      .toUpperCase()}`}
+                    {`${getId()}`}
                   </Badge>
                 </Center>
               </Flex>
