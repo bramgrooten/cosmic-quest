@@ -1,9 +1,8 @@
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { Box, Center, Grid, GridItem, SimpleGrid } from "@chakra-ui/layout";
-import { ButtonGroup, Flex, IconButton, Spacer } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { Center, Grid, GridItem } from "@chakra-ui/layout";
+import { ButtonGroup, Flex, IconButton } from "@chakra-ui/react";
+import { useState } from "react";
 import Dashboard from "../components/Dashboard";
-import Map, { Planet, PlanetState, Star } from "../components/Map";
+import Map, { Planet, Star } from "../components/Map";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import { FaPlay, FaPause, FaRedo } from "react-icons/fa";
 
@@ -21,7 +20,6 @@ export default function Page() {
   const { height, width } = useWindowDimensions();
   const [scale, setScale] = useState(1);
   const [bodies, setBodies] = useState<GalaxyData>();
-  const [simulate, setSimulate] = useState<boolean>(false);
   const [refresh, setRefresh] = useState<ReturnType<typeof setTimeout>>();
   const [selectedPlanet, setSelectedPlanet] = useState<Planet>();
 
@@ -29,7 +27,6 @@ export default function Page() {
     fetch("http://127.0.0.1:5000/move")
       .then((res) => res.json())
       .then((data: GalaxyData) => {
-        console.log(data);
         setBodies(data);
       });
   };
@@ -38,7 +35,6 @@ export default function Page() {
     fetch("http://127.0.0.1:5000/reset")
       .then((res) => res.json())
       .then((data: GalaxyData) => {
-        console.log(data);
         setBodies(data);
       });
   };
@@ -49,10 +45,7 @@ export default function Page() {
     }
 
     const interval = setInterval(() => {
-      console.log("Fetching Galaxy...");
       fetchGalaxy();
-      console.log("Galaxy Fetched, waiting 5 seconds");
-      //setRefresh(() => setSimulationRefresh());
     }, 2000);
     setRefresh(interval);
   };

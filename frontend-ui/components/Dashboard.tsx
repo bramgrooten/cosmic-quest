@@ -54,13 +54,6 @@ export default function Dashboard({ selectedPlanet }: DashboardProps) {
         bg={interpolateHex("#1B191B", "#000000", 0.05)}
         borderLeft={`0.01rem solid rgba(201, 175, 128, .2)`}
       >
-        {/* <Flex>
-        <Center w="100%">
-          <Text color={"white"} as="b" height="80px">
-            Planet HB1232
-          </Text>
-        </Center>
-      </Flex> */}
         <Flex>
           <IconButton
             aria-label={"Play"}

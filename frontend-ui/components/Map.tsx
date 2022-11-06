@@ -1,8 +1,6 @@
-import { popper } from "@popperjs/core";
 import dynamic from "next/dynamic";
-import { release } from "os";
 import p5Types from "p5";
-import { MutableRefObject, useRef, useState } from "react";
+import { useRef } from "react";
 import { interpolateHex } from "../helpers/interpolateHex";
 import { GalaxyData } from "../pages";
 
@@ -206,9 +204,6 @@ export default function Map({
   const drag = (p5: p5Types) => {
     mouseX.current = p5.mouseX;
     mouseY.current = p5.mouseY;
-
-    console.log(transformX.current);
-    console.log(transformY.current);
 
     if (isMouseDragged) {
       transformX.current += (mouseX.current - mousePressedX.current!) * 0.3;
