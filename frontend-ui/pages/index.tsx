@@ -70,7 +70,7 @@ export default function Page() {
 
   return (
     <Grid h="calc(100vh)" templateColumns="repeat(3, 1fr)" bg="#1B191B">
-      <GridItem colSpan={2}>
+      <GridItem colSpan={3}>
         <Flex margin={3} w="100%" position={"absolute"}>
           <Center w="100%">
             <ButtonGroup gap="1">
@@ -99,16 +99,8 @@ export default function Page() {
           </Center>
         </Flex>
         {bodies && (
-          <Map
-            width={(width * 2) / 3}
-            height={height}
-            bodies={bodies}
-            scale={scale}
-          />
+          <Map width={width} height={height} bodies={bodies} scale={scale} />
         )}
-      </GridItem>
-      <GridItem>
-        <Dashboard />
       </GridItem>
     </Grid>
   );

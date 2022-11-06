@@ -2,6 +2,7 @@ import { popper } from "@popperjs/core";
 import dynamic from "next/dynamic";
 import { release } from "os";
 import p5Types from "p5";
+import { useRef, useState } from "react";
 import { interpolateHex } from "../helpers/interpolateHex";
 import { GalaxyData } from "../pages";
 
@@ -59,11 +60,11 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
   const zoomSensitivity = 0.1;
   // Scale while drawing objects
   // Start with a scale of 1
-  let currentScale = 1;
+  let currentScale = useRef(1);
   // Transformation while drawing objects
   // Start with no transformation
-  let transformX = 0;
-  let transformY = 0;
+  let transformX = useRef(0);
+  let transformY = useRef(0);
   let isMouseDragged = false;
   let mousePressedX: number | null = null;
   let mousePressedY: number | null = null;
@@ -79,14 +80,14 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
   const draw = (p5: p5Types) => {
     p5.background("#1B191B");
     p5.push();
-    p5.translate(transformX, transformY);
-    p5.scale(currentScale);
+    p5.translate(transformX.current, transformY.current);
+    p5.scale(currentScale.current);
     let planetIndex = 0;
     bodies.star_list.forEach((star) => {
       drawStar(p5, star);
       star.planet_list.forEach((planet) => {
         planet["habitable"] = bodies.scores[planetIndex];
-        if (currentScale > 6) {
+        if (currentScale.current > 6) {
           drawPlanet(p5, planet);
         }
         planetIndex++;
@@ -127,9 +128,11 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     }
 
     // Apply transformation and scale incrementally
-    currentScale = currentScale * scaleFactor;
-    transformX = p5.mouseX - p5.mouseX * scaleFactor + transformX * scaleFactor;
-    transformY = p5.mouseY - p5.mouseY * scaleFactor + transformY * scaleFactor;
+    currentScale.current = currentScale.current * scaleFactor;
+    transformX.current =
+      p5.mouseX - p5.mouseX * scaleFactor + transformX.current * scaleFactor;
+    transformY.current =
+      p5.mouseY - p5.mouseY * scaleFactor + transformY.current * scaleFactor;
 
     // Disable page scroll
     return false;
@@ -137,8 +140,8 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
 
   const drag = (p5: p5Types) => {
     if (isMouseDragged) {
-      transformX += -(p5.mouseX - mousePressedX!) * 0.3;
-      transformY += -(p5.mouseY - mousePressedY!) * 0.3;
+      transformX.current += -(p5.mouseX - mousePressedX!) * 0.3;
+      transformY.current += -(p5.mouseY - mousePressedY!) * 0.3;
     }
   };
 
@@ -159,11 +162,15 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
         width,
         height
       );
-      p5.circle(scaledX, scaledY, scaleWithZoom(scale * 1.5, currentScale) * 3);
+      p5.circle(
+        scaledX,
+        scaledY,
+        scaleWithZoom(scale * 1.5, currentScale.current) * 3
+      );
     });
 
     p5.stroke(color);
-    p5.strokeWeight(scaleWithZoom(scale * 0.7, currentScale));
+    p5.strokeWeight(scaleWithZoom(scale * 0.7, currentScale.current));
     connections.forEach((connection) => {
       const planetStart = bodies.planet_list[connection[0]];
       const planetEnd = bodies.planet_list[connection[1]];
@@ -198,7 +205,11 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
       height
     );
 
-    p5.circle(scaledX, scaledY, scaleWithZoom(scale * 1.5, currentScale));
+    p5.circle(
+      scaledX,
+      scaledY,
+      scaleWithZoom(scale * 1.5, currentScale.current)
+    );
   };
 
   const drawStar = (p5: p5Types, star: Star) => {
@@ -209,7 +220,7 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     p5.noStroke();
     let angle = p5.TWO_PI / 4;
     let halfAngle = angle / 2.0;
-    const radius1 = scaleWithZoom(scale, currentScale);
+    const radius1 = scaleWithZoom(scale, currentScale.current);
     const radius2 = radius1 * 4;
     p5.beginShape();
     for (let a = 0; a < p5.TWO_PI; a += angle) {
