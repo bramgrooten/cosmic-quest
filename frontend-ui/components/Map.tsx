@@ -85,7 +85,6 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     bodies.star_list.forEach((star) => {
       drawStar(p5, star);
       star.planet_list.forEach((planet) => {
-        //console.log(bodies.scores);
         planet["habitable"] = bodies.scores[planetIndex];
         if (currentScale > 6) {
           drawPlanet(p5, planet);
@@ -93,7 +92,13 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
         planetIndex++;
       });
     });
-    drawColony(p5, bodies.human_colony, bodies.connections);
+    drawColonies(p5, bodies.human_colony, bodies.connections, "#0000FF");
+    drawColonies(
+      p5,
+      bodies.new_human_colony_planets,
+      bodies.new_connections,
+      "#A020F0"
+    );
     p5.pop();
   };
 
@@ -137,13 +142,13 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     }
   };
 
-  const drawColony = (
+  const drawColonies = (
     p5: p5Types,
     colonies: number[],
-    connections: [number, number][]
+    connections: [number, number][],
+    color: string
   ) => {
-    let color = p5.color("#0000FF");
-    p5.fill(color);
+    p5.fill(p5.color(color));
     p5.noStroke();
 
     colonies.forEach((colony) => {
@@ -157,8 +162,8 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
       p5.circle(scaledX, scaledY, scaleWithZoom(scale * 1.5, currentScale) * 3);
     });
 
-    p5.stroke("#0000FF");
-    p5.strokeWeight(scaleWithZoom(scale * 0.5, currentScale));
+    p5.stroke(color);
+    p5.strokeWeight(scaleWithZoom(scale * 0.7, currentScale));
     connections.forEach((connection) => {
       const planetStart = bodies.planet_list[connection[0]];
       const planetEnd = bodies.planet_list[connection[1]];
@@ -181,7 +186,7 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
 
   const drawPlanet = (p5: p5Types, planet: Planet) => {
     let color = p5.color(
-      interpolateHex("#CD5757", "#7BCD57", planet.habitable / 100)
+      interpolateHex("#CD5757", "#00FF00", planet.habitable / 100)
     );
     p5.fill(color);
     p5.noStroke();
