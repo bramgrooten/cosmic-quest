@@ -111,5 +111,13 @@ def set_num_planets_to_add(timestep):
         return 2
     elif timestep < 24:
         return 3
-    else:
+    elif timestep < 36:
         return 4
+    elif timestep < 50:
+        return 5
+    elif timestep < 66:
+        return 6
+    elif timestep < 84:
+        return 7
+    else:
+        return 8
