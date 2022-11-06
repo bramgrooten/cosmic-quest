@@ -1,7 +1,7 @@
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Box, Center, Grid, GridItem, SimpleGrid } from "@chakra-ui/layout";
 import { ButtonGroup, Flex, IconButton, Spacer } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Dashboard from "../components/Dashboard";
 import Map, { Planet, PlanetState, Star } from "../components/Map";
 import useWindowDimensions from "../hooks/useWindowDimensions";
@@ -23,6 +23,7 @@ export default function Page() {
   const [bodies, setBodies] = useState<GalaxyData>();
   const [simulate, setSimulate] = useState<boolean>(false);
   const [refresh, setRefresh] = useState<ReturnType<typeof setTimeout>>();
+  const [selectedPlanet, setSelectedPlanet] = useState<Planet>();
 
   const fetchGalaxy = () => {
     fetch("http://127.0.0.1:5000/move")
@@ -56,18 +57,6 @@ export default function Page() {
     setRefresh(interval);
   };
 
-  // useEffect(() => {
-  //   if (refresh) {
-  //     const interval = setInterval(() => {
-  //       console.log("Fetching Galaxy...");
-  //       fetchGalaxy();
-  //       console.log("Galaxy Fetched, waiting 5 seconds");
-  //     }, 5000);
-
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [refresh]);
-
   return (
     <Grid h="calc(100vh)" templateColumns="repeat(3, 1fr)" bg="#1B191B">
       <GridItem colSpan={3}>
@@ -98,9 +87,16 @@ export default function Page() {
             </ButtonGroup>
           </Center>
         </Flex>
-        <Dashboard />
+        <Dashboard selectedPlanet={selectedPlanet} />
+
         {bodies && (
-          <Map width={width} height={height} bodies={bodies} scale={scale} />
+          <Map
+            width={width}
+            height={height}
+            bodies={bodies}
+            scale={scale}
+            setSelectedPlanet={setSelectedPlanet}
+          />
         )}
       </GridItem>
     </Grid>

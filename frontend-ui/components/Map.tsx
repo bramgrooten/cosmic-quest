@@ -2,7 +2,7 @@ import { popper } from "@popperjs/core";
 import dynamic from "next/dynamic";
 import { release } from "os";
 import p5Types from "p5";
-import { useRef, useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { interpolateHex } from "../helpers/interpolateHex";
 import { GalaxyData } from "../pages";
 
@@ -33,6 +33,7 @@ interface MapProps {
   height: number;
   scale: number;
   bodies: GalaxyData;
+  setSelectedPlanet: any;
 }
 
 function scaleCoordinate(
@@ -52,7 +53,13 @@ function scaleWithZoom(scale: number, currentScale: number) {
   return scale * (0.8 / (currentScale - 0.2) + 0.2);
 }
 
-export default function Map({ width, height, bodies, scale }: MapProps) {
+export default function Map({
+  width,
+  height,
+  bodies,
+  scale,
+  setSelectedPlanet,
+}: MapProps) {
   // Will only import `react-p5` on client-side
   const Sketch = dynamic(() => import("react-p5").then((mod) => mod.default), {
     ssr: false,
@@ -70,6 +77,7 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
   let mousePressedY = useRef(0);
   let mouseX = useRef(1000);
   let mouseY = useRef(1000);
+  let curPlanet = useRef<Planet | undefined>();
   // See annotations in JS for more information
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     const cnv = p5.createCanvas(width, height).parent(canvasParentRef);
@@ -77,6 +85,7 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     cnv.mousePressed(() => press(p5));
     cnv.mouseReleased(() => release());
     cnv.mouseMoved(() => drag(p5));
+    cnv.mouseClicked(() => click(p5));
   };
 
   const draw = (p5: p5Types) => {
@@ -102,7 +111,48 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
       bodies.new_connections,
       "#A020F0"
     );
+    if (curPlanet.current) {
+      drawBox(p5, curPlanet.current);
+    }
+
     p5.pop();
+  };
+
+  const click = (p5: p5Types) => {
+    const x =
+      p5.mouseX / currentScale.current -
+      transformX.current / currentScale.current;
+    const y =
+      p5.mouseY / currentScale.current -
+      transformY.current / currentScale.current;
+
+    let dist = -1;
+    let closestPlanet = bodies.planet_list[0];
+
+    bodies.planet_list.forEach((planet) => {
+      const { scaledX, scaledY } = scaleCoordinate(
+        planet.x,
+        planet.y,
+        width,
+        height
+      );
+      const a = scaledX - x;
+      const b = scaledY - y;
+      const c = Math.hypot(a, b);
+
+      if (c < dist) {
+        dist = c;
+        closestPlanet = planet;
+      }
+
+      if (dist === -1) {
+        dist = c;
+        closestPlanet = planet;
+      }
+    });
+
+    setSelectedPlanet(closestPlanet);
+    curPlanet.current = closestPlanet;
   };
 
   const release = () => {
@@ -134,15 +184,20 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     }
 
     // Apply transformation and scale incrementally
-    currentScale.current = currentScale.current * scaleFactor;
-    transformX.current =
-      mouseX.current -
-      mouseX.current * scaleFactor +
-      transformX.current * scaleFactor;
-    transformY.current =
-      mouseY.current -
-      mouseY.current * scaleFactor +
-      transformY.current * scaleFactor;
+    if (
+      !(currentScale.current * scaleFactor > 40) &&
+      !(currentScale.current * scaleFactor < 0.65)
+    ) {
+      currentScale.current = currentScale.current * scaleFactor;
+      transformX.current =
+        mouseX.current -
+        mouseX.current * scaleFactor +
+        transformX.current * scaleFactor;
+      transformY.current =
+        mouseY.current -
+        mouseY.current * scaleFactor +
+        transformY.current * scaleFactor;
+    }
 
     // Disable page scroll
     return false;
@@ -152,10 +207,27 @@ export default function Map({ width, height, bodies, scale }: MapProps) {
     mouseX.current = p5.mouseX;
     mouseY.current = p5.mouseY;
 
+    console.log(transformX.current);
+    console.log(transformY.current);
+
     if (isMouseDragged) {
-      transformX.current += -(mouseX.current - mousePressedX.current!) * 0.3;
-      transformY.current += -(mouseY.current - mousePressedY.current!) * 0.3;
+      transformX.current += (mouseX.current - mousePressedX.current!) * 0.3;
+      transformY.current += (mouseY.current - mousePressedY.current!) * 0.3;
     }
+  };
+
+  const drawBox = (p5: p5Types, planet: Planet) => {
+    p5.stroke("red");
+    p5.noFill();
+    const { scaledX, scaledY } = scaleCoordinate(
+      planet.x,
+      planet.y,
+      width,
+      height
+    );
+    const scaledSize = scaleWithZoom(scale * 8, currentScale.current);
+    const offset = (1 / 2) * scaledSize;
+    p5.square(scaledX - offset, scaledY - offset, scaledSize);
   };
 
   const drawColonies = (

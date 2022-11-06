@@ -107,7 +107,7 @@ class map_generation:
         # for each star...
         for i, star in enumerate(Map.star_list):
             # determine how many planets
-            planet_count = 3#random.randint(1, 5)
+            planet_count = random.randint(1, 5)
             # for each star, determine where planets are
             self.generate_star_system_distribution(star, planet_count)
 

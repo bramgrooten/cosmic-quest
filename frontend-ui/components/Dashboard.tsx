@@ -10,17 +10,27 @@ import {
   InputLeftAddon,
   SimpleGrid,
   Slide,
+  Spacer,
   Stack,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaPlay } from "react-icons/fa";
 import { interpolateHex } from "../helpers/interpolateHex";
-import Planet from "../public/planets/planet-2.svg";
+import { Planet } from "./Map";
 
-export default function Dashboard() {
+interface DashboardProps {
+  selectedPlanet: Planet | undefined;
+}
+
+export default function Dashboard({ selectedPlanet }: DashboardProps) {
   const { isOpen, onToggle } = useDisclosure();
+
+  if (!selectedPlanet) {
+    return <></>;
+  }
   if (!isOpen) {
     return (
       <IconButton
@@ -87,14 +97,45 @@ export default function Dashboard() {
         </Flex>
         <Flex marginTop={10}>
           <Center w="100%">
-            <Flex
-              bg={interpolateHex("#1B191B", "#000000", 0.3)}
-              borderRadius={5}
-              paddingX={6}
-              paddingY={2}
-            >
-              Hello
-            </Flex>
+            <Stack gap={5}>
+              <Flex
+                bg={interpolateHex("#1B191B", "#000000", 0.3)}
+                borderRadius={5}
+                paddingX={6}
+                paddingY={2}
+              >
+                <Center w="100%">
+                  <Text color={"white"}>Radius</Text>
+                </Center>
+              </Flex>
+              <Center w="100%">
+                <Text color={"white"}>{selectedPlanet.radius}</Text>
+              </Center>
+              <Flex
+                bg={interpolateHex("#1B191B", "#000000", 0.3)}
+                borderRadius={5}
+                paddingX={6}
+                paddingY={2}
+              >
+                <Center w="100%">
+                  <Text color={"white"}>Mass</Text>
+                </Center>
+              </Flex>
+              <Center w="100%">
+                <Text color={"white"}>{selectedPlanet.mass}</Text>
+              </Center>
+              <Flex
+                bg={interpolateHex("#1B191B", "#000000", 0.3)}
+                borderRadius={5}
+                paddingX={6}
+                paddingY={2}
+              >
+                <Text color={"white"}>Temperature</Text>
+              </Flex>
+              <Center w="100%">
+                <Text color={"white"}>{selectedPlanet.temperature}</Text>
+              </Center>
+            </Stack>
           </Center>
         </Flex>
       </Box>
